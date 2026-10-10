@@ -1,0 +1,803 @@
+{
+  "id": "id_89",
+  "query": "我打算2025年11月12号从重庆去厦门玩，计划在那边待到2025年11月17号，麻烦你帮我规划一下整个行程吧，包括交通、住宿、吃饭和景点安排。\n\n关于交通呢，我想去程坐飞机，最好是直飞的，帮我看看直飞航班里最便宜的那一班吧。至于住宿，我希望住得舒适一点，酒店的装修得是2023年以后新弄过的，这样环境会好一些。我们就两个人出行，一间房就够了。\n\n对了，厦门好像有挺多不错的艺术展览，这次我想把推荐的所有'艺术展览'类景点都安排上，去好好感受一下艺术氛围。另外，我还听说那边有一些很适合放松的地方，你帮我找一下'休闲体验'类的景点，选一个评分最高的安排进去吧。\n\n基本上我的要求就是这样了，信息应该都齐了，麻烦你直接帮我开始规划行程吧！ 2025年11月12号是周三",
+  "model": "deepseek-flash",
+  "language": "zh",
+  "final_plan": "",
+  "success": false,
+  "problem_ir": {
+    "trip": {
+      "origin": "重庆",
+      "destination": "厦门",
+      "start_date": "2025-11-12",
+      "end_date": "2025-11-17",
+      "travelers": 2,
+      "rooms": 1,
+      "budget_max": null,
+      "currency": "RMB"
+    },
+    "transport": {
+      "outbound": {
+        "allowed_modes": [
+          "flight"
+        ],
+        "constraints": [
+          {
+            "field": "direct",
+            "op": "==",
+            "value": true,
+            "source_text": "直飞航班里最便宜的那一班"
+          }
+        ],
+        "soft_preferences": [
+          {
+            "field": "direct",
+            "op": "==",
+            "value": true,
+            "source_text": "最好是直飞的"
+          }
+        ],
+        "objective": {
+          "field": "price",
+          "sense": "min",
+          "source_text": "最便宜的那一班",
+          "soft": false
+        }
+      },
+      "return": {
+        "allowed_modes": [
+          "flight",
+          "train"
+        ],
+        "constraints": [],
+        "soft_preferences": [],
+        "objective": null
+      }
+    },
+    "hotel": {
+      "constraints": [
+        {
+          "field": "decoration_year",
+          "op": ">=",
+          "value": 2023.0,
+          "source_text": "装修得是2023年以后新弄过的"
+        }
+      ],
+      "soft_preferences": [],
+      "objective": null
+    },
+    "attractions": {
+      "count": null,
+      "selection": "all_matching",
+      "required_names": [],
+      "constraints": [
+        {
+          "field": "attraction_type",
+          "op": "==",
+          "value": "艺术展览",
+          "source_text": "推荐的所有'艺术展览'类景点"
+        }
+      ],
+      "soft_preferences": [],
+      "objective": null,
+      "required_groups": [
+        {
+          "name": "艺术展览",
+          "selection": "all_matching",
+          "constraints": [
+            {
+              "field": "attraction_type",
+              "op": "==",
+              "value": "艺术展览",
+              "source_text": "推荐的所有'艺术展览'类景点"
+            }
+          ],
+          "source_text": "推荐的所有'艺术展览'类景点"
+        },
+        {
+          "name": "休闲体验最高评分",
+          "selection": "top_k",
+          "count": 1,
+          "constraints": [
+            {
+              "field": "attraction_type",
+              "op": "==",
+              "value": "休闲体验",
+              "source_text": "'休闲体验'类的景点"
+            }
+          ],
+          "objective": {
+            "field": "rating",
+            "sense": "max",
+            "source_text": "选一个评分最高的安排进去吧"
+          },
+          "source_text": "'休闲体验'类的景点，选一个评分最高的安排进去吧"
+        }
+      ]
+    },
+    "restaurants": {
+      "requirements": [
+        {
+          "required_name": null,
+          "nearby_location": null,
+          "constraints": [],
+          "objective": null,
+          "soft_preferences": []
+        }
+      ]
+    },
+    "global_constraints": [],
+    "explicit_preferences": [
+      "去程坐飞机，最好是直飞的",
+      "住得舒适一点",
+      "推荐的所有'艺术展览'类景点都安排上",
+      "'休闲体验'类的景点，选一个评分最高的安排进去"
+    ]
+  },
+  "metrics": {
+    "llm_calls": 4,
+    "api_attempts": 4,
+    "input_tokens": 5415,
+    "output_tokens": 2394,
+    "total_tokens": 7809,
+    "tool_calls": 10,
+    "tool_calls_by_name": {
+      "query_train_info": 1,
+      "query_flight_info": 2,
+      "query_hotel_info": 1,
+      "recommend_attractions": 1,
+      "recommend_restaurants": 3,
+      "query_attraction_details": 2
+    },
+    "tool_errors": 0,
+    "duplicate_tool_calls_avoided": 0,
+    "solver_rounds": 0,
+    "master_assignments": 0,
+    "master_day_cuts": 0,
+    "constraint_propagations": 1,
+    "constraint_false": 1,
+    "constraint_unknown": 1,
+    "fastcheck_fact_requests": 0,
+    "frontier_states": 0,
+    "shared_fact_requests": 0,
+    "solver_runtime": 0.0,
+    "solver_backend": "gurobi",
+    "route_queries": 0,
+    "parser_success": true,
+    "parser_attempts": 2,
+    "parser_validation_errors": [
+      "float() argument must be a string or a real number, not 'NoneType'"
+    ],
+    "semantic_audit_calls": 1,
+    "semantic_audit_retries": 0,
+    "semantic_audit_repairs": 1,
+    "semantic_audit_rejected": 0,
+    "semantic_recovery_calls": 1,
+    "ir_repairs_applied": 0,
+    "recovery_rejected": 0,
+    "recall_expansions_proposed": 0,
+    "recall_expansions_accepted": 0,
+    "verification_success": false,
+    "fallback_used": false,
+    "elapsed_time": 9.008784055709839
+  },
+  "semantic_events": [
+    {
+      "stage": "semantic_audit",
+      "verdict": "REPAIR",
+      "issues": [
+        {
+          "kind": "modality",
+          "source_text": "最好是直飞的",
+          "reason": "'最好是直飞的' is a soft preference, but the subsequent optimization '直飞航班里最便宜的那一班' requires the selection scope to be direct flights, making direct a hard scope constraint for the objective rather than merely a soft preference."
+        },
+        {
+          "kind": "objective",
+          "source_text": "直飞航班里最便宜的那一班",
+          "reason": "The cheapest objective must be applied within direct flights among results; the IR currently leaves 'direct' only as a soft preference, so the objective could select a non-direct cheaper flight."
+        },
+        {
+          "kind": "missing",
+          "source_text": "选一个评分最高的安排进去吧",
+          "reason": "The request requires choosing one '休闲体验' attraction with the highest rating, but the parsed IR has no constraint or group/objective for '休闲体验' or rating maximization."
+        },
+        {
+          "kind": "scope",
+          "source_text": "推荐的所有'艺术展览'类景点",
+          "reason": "The IR uses a generic attraction_type constraint and all_matching, but does not capture that this scope is specifically the recommended/all matching '艺术展览' attractions as a named required group."
+        },
+        {
+          "kind": "missing",
+          "source_text": "包括交通、住宿、吃饭和景点安排",
+          "reason": "The request explicitly requires meal/restaurant arrangements, but the IR's restaurant requirements are empty placeholders with no constraints or objective."
+        },
+        {
+          "kind": "incorrect",
+          "source_text": "计划在那边待到2025年11月17号",
+          "reason": "The trip end date is 2025-11-17 as explicitly stated; this appears correctly captured, but the return transport is not specified in the request, so allowed return modes should likely not include train unless explicitly stated."
+        },
+        {
+          "kind": "modality",
+          "source_text": "酒店的装修得是2023年以后新弄过的",
+          "reason": "The IR uses op '>' with value 2023, which excludes hotels renovated in 2023. '2023年以后' in Chinese can mean after 2023, but if interpreted as including 2023 it should be '>='. The exact boundary is ambiguous; however, the parsed value 2023 with '>' may be incorrect if the user intended 'since 2023'."
+        }
+      ],
+      "attempt": 1,
+      "applied": true
+    },
+    {
+      "stage": "semantic_recovery",
+      "action": "KEEP",
+      "issues": [
+        {
+          "source_text": "你帮我找一下'休闲体验'类的景点，选一个评分最高的安排进去吧",
+          "reason": "The requested '休闲体验' highest-rated attraction cannot be satisfied because zero eligible attractions of that type were retrieved; this reflects the available retrieval scope rather than an IR error."
+        }
+      ],
+      "conflicts": [
+        {
+          "constraint_id": "attractions.coverage",
+          "kind": "attraction_coverage",
+          "reason": "required attraction group absent",
+          "eligible": 0,
+          "required": 1,
+          "group": {
+            "name": "休闲体验最高评分",
+            "selection": "top_k",
+            "count": 1,
+            "constraints": [
+              {
+                "field": "attraction_type",
+                "op": "==",
+                "value": "休闲体验",
+                "source_text": "'休闲体验'类的景点"
+              }
+            ],
+            "objective": {
+              "field": "rating",
+              "sense": "max",
+              "source_text": "选一个评分最高的安排进去吧"
+            },
+            "source_text": "'休闲体验'类的景点，选一个评分最高的安排进去吧"
+          },
+          "source_text": "",
+          "hard": true
+        }
+      ]
+    }
+  ],
+  "verification": null,
+  "state_summary": {
+    "counts": {
+      "flight": 20,
+      "train": 9,
+      "hotel": 20,
+      "attraction": 2,
+      "restaurant": 17,
+      "route": 0,
+      "location": 0
+    },
+    "queried_keys": [
+      "attractions:厦门:艺术展览",
+      "details:attraction:沙坡尾艺术西区",
+      "details:attraction:鼓浪屿钢琴博物馆",
+      "hotels:厦门:2025-11-12:2025-11-17:None:None",
+      "outbound:flight:重庆:厦门:2025-11-12",
+      "restaurants:generic:24.437609,118.087587",
+      "restaurants:generic:24.438300,118.069799",
+      "restaurants:hotel:24.461239,118.090552:0",
+      "return:flight:厦门:重庆:2025-11-17",
+      "return:train:厦门:重庆:2025-11-17"
+    ],
+    "failed_requests": {},
+    "sample_records": {
+      "flight": [
+        {
+          "name": "SC2141",
+          "price": 710.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "厦门",
+          "destination": "重庆",
+          "departure_station": "高崎国际机场",
+          "arrival_station": "江北国际机场",
+          "departure_time": 1225,
+          "arrival_time": 1400,
+          "departure_date": "2025-11-17",
+          "arrival_date": "2025-11-17",
+          "duration": 175,
+          "direct": true,
+          "seat_class": "经济舱",
+          "train_type": "山航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "CKG",
+              "arrStationName": "江北国际机场",
+              "depCityName": "厦门",
+              "depStationCode": "XMN",
+              "depStationName": "高崎国际机场",
+              "duration": 175,
+              "arrDateTime": "2025-11-17 23:20:00",
+              "depDateTime": "2025-11-17 20:25:00",
+              "marketingTransportName": "山航",
+              "marketingTransportNo": "SC2141",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            }
+          ]
+        },
+        {
+          "name": "CA4675",
+          "price": 770.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "厦门",
+          "destination": "重庆",
+          "departure_station": "高崎国际机场",
+          "arrival_station": "江北国际机场",
+          "departure_time": 1225,
+          "arrival_time": 1400,
+          "departure_date": "2025-11-17",
+          "arrival_date": "2025-11-17",
+          "duration": 175,
+          "direct": true,
+          "seat_class": "经济舱",
+          "train_type": "国航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "CKG",
+              "arrStationName": "江北国际机场",
+              "depCityName": "厦门",
+              "depStationCode": "XMN",
+              "depStationName": "高崎国际机场",
+              "duration": 175,
+              "arrDateTime": "2025-11-17 23:20:00",
+              "depDateTime": "2025-11-17 20:25:00",
+              "marketingTransportName": "国航",
+              "marketingTransportNo": "CA4675",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            }
+          ]
+        },
+        {
+          "name": "MF8403",
+          "price": 899.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "厦门",
+          "destination": "重庆",
+          "departure_station": "高崎国际机场",
+          "arrival_station": "江北国际机场",
+          "departure_time": 410,
+          "arrival_time": 600,
+          "departure_date": "2025-11-17",
+          "arrival_date": "2025-11-17",
+          "duration": 190,
+          "direct": true,
+          "seat_class": "经济舱",
+          "train_type": "厦航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "CKG",
+              "arrStationName": "江北国际机场",
+              "depCityName": "厦门",
+              "depStationCode": "XMN",
+              "depStationName": "高崎国际机场",
+              "duration": 190,
+              "arrDateTime": "2025-11-17 10:00:00",
+              "depDateTime": "2025-11-17 06:50:00",
+              "marketingTransportName": "厦航",
+              "marketingTransportNo": "MF8403",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            }
+          ]
+        }
+      ],
+      "train": [
+        {
+          "name": "D695+G320",
+          "price": 806.5,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "厦门",
+          "destination": "重庆",
+          "departure_station": "厦门站",
+          "arrival_station": "重庆西站",
+          "departure_time": 525,
+          "arrival_time": 1139,
+          "departure_date": "2025-11-17",
+          "arrival_date": "2025-11-17",
+          "duration": 595,
+          "direct": false,
+          "seat_class": "二等座",
+          "train_type": "动车",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "IOQ",
+              "arrStationName": "深圳北站",
+              "depCityName": "厦门",
+              "depStationCode": "XMS",
+              "depStationName": "厦门站",
+              "duration": 193,
+              "arrDateTime": "2025-11-17 11:58:00",
+              "depDateTime": "2025-11-17 08:45:00",
+              "marketingTransportName": "动车",
+              "marketingTransportNo": "D695",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            },
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "CXW",
+              "arrStationName": "重庆西站",
+              "depCityName": "深圳北",
+              "depStationCode": "IOQ",
+              "depStationName": "深圳北站",
+              "duration": 402,
+              "arrDateTime": "2025-11-17 18:59:00",
+              "depDateTime": "2025-11-17 12:17:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G320",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "D2407+G320",
+          "price": 804.5,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "厦门",
+          "destination": "重庆",
+          "departure_station": "厦门北站",
+          "arrival_station": "重庆西站",
+          "departure_time": 510,
+          "arrival_time": 1139,
+          "departure_date": "2025-11-17",
+          "arrival_date": "2025-11-17",
+          "duration": 596,
+          "direct": false,
+          "seat_class": "二等座",
+          "train_type": "动车",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "IOQ",
+              "arrStationName": "深圳北站",
+              "depCityName": "厦门",
+              "depStationCode": "XKS",
+              "depStationName": "厦门北站",
+              "duration": 194,
+              "arrDateTime": "2025-11-17 11:44:00",
+              "depDateTime": "2025-11-17 08:30:00",
+              "marketingTransportName": "动车",
+              "marketingTransportNo": "D2407",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            },
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "CXW",
+              "arrStationName": "重庆西站",
+              "depCityName": "深圳北",
+              "depStationCode": "IOQ",
+              "depStationName": "深圳北站",
+              "duration": 402,
+              "arrDateTime": "2025-11-17 18:59:00",
+              "depDateTime": "2025-11-17 12:17:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G320",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "D2301+G2930",
+          "price": 782.5,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "厦门",
+          "destination": "重庆",
+          "departure_station": "厦门北站",
+          "arrival_station": "重庆西站",
+          "departure_time": 651,
+          "arrival_time": 1321,
+          "departure_date": "2025-11-17",
+          "arrival_date": "2025-11-17",
+          "duration": 648,
+          "direct": false,
+          "seat_class": "二等座",
+          "train_type": "动车",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "IOQ",
+              "arrStationName": "深圳北站",
+              "depCityName": "厦门",
+              "depStationCode": "XKS",
+              "depStationName": "厦门北站",
+              "duration": 197,
+              "arrDateTime": "2025-11-17 14:08:00",
+              "depDateTime": "2025-11-17 10:51:00",
+              "marketingTransportName": "动车",
+              "marketingTransportNo": "D2301",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            },
+            {
+              "arrCityName": "重庆",
+              "arrStationCode": "CXW",
+              "arrStationName": "重庆西站",
+              "depCityName": "深圳北",
+              "depStationCode": "IOQ",
+              "depStationName": "深圳北站",
+              "duration": 451,
+              "arrDateTime": "2025-11-17 22:01:00",
+              "depDateTime": "2025-11-17 14:30:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G2930",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        }
+      ],
+      "hotel": [
+        {
+          "name": "厦门海沧正元希尔顿逸林酒店",
+          "price": 498.0,
+          "rating": 4.7,
+          "city": null,
+          "address": "厦门 海沧区 滨湖一里208号 ，近阿罗海城市广场。",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 24.475505,
+          "lon": 118.032431,
+          "star": 5.0,
+          "services": [],
+          "brand": "希尔顿",
+          "decoration_year": 2017.0
+        },
+        {
+          "name": "全季厦门中山路植物园酒店",
+          "price": 395.0,
+          "rating": 5.0,
+          "city": null,
+          "address": "思明区",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 24.461239,
+          "lon": 118.090552,
+          "star": 3.0,
+          "services": [],
+          "brand": "全季",
+          "decoration_year": 2025.0
+        },
+        {
+          "name": "如家-厦门中山路步行街中山公园地铁站店",
+          "price": 215.0,
+          "rating": 4.8,
+          "city": null,
+          "address": "公园南路81号 ，中山公园南门。",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 24.456117,
+          "lon": 118.085806,
+          "star": 2.0,
+          "services": [],
+          "brand": "如家",
+          "decoration_year": 2020.0
+        }
+      ],
+      "attraction": [
+        {
+          "name": "沙坡尾艺术西区",
+          "price": 0.0,
+          "rating": 4.7,
+          "city": "厦门",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 24.437609,
+          "lon": 118.087587,
+          "min_duration": 120,
+          "max_duration": 210,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "艺术展览",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "鼓浪屿钢琴博物馆",
+          "price": 30.0,
+          "rating": 4.7,
+          "city": "厦门",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 24.4383,
+          "lon": 118.069799,
+          "min_duration": 0,
+          "max_duration": 90,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "艺术展览",
+          "closing_dates": "nan"
+        }
+      ],
+      "restaurant": [
+        {
+          "name": "阿弟排档",
+          "price": 152.0,
+          "rating": 4.3,
+          "city": null,
+          "address": null,
+          "opening_time": 660,
+          "closing_time": 1260,
+          "lat": 24.461354,
+          "lon": 118.089085,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [],
+          "nearby_location": "全季厦门中山路植物园酒店",
+          "attraction_type": null
+        },
+        {
+          "name": "Et toi.与你餐厅",
+          "price": 100.0,
+          "rating": 3.9,
+          "city": null,
+          "address": null,
+          "opening_time": 660,
+          "closing_time": 1260,
+          "lat": 24.463471,
+          "lon": 118.092026,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [],
+          "nearby_location": "全季厦门中山路植物园酒店",
+          "attraction_type": null
+        },
+        {
+          "name": "陈氏香港南豐茶餐厅(厦门总店)",
+          "price": 62.0,
+          "rating": 4.6,
+          "city": null,
+          "address": null,
+          "opening_time": 1020,
+          "closing_time": 1230,
+          "lat": 24.463059,
+          "lon": 118.088438,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;快餐厅;茶餐厅",
+          "tags": [],
+          "nearby_location": "全季厦门中山路植物园酒店",
+          "attraction_type": null
+        }
+      ]
+    }
+  },
+  "solution": null,
+  "constraint_summary": {
+    "truth": "UNSAT",
+    "satisfied": 10,
+    "unresolved": 1,
+    "conflicts": [
+      {
+        "constraint_id": "attractions.coverage",
+        "kind": "attraction_coverage",
+        "reason": "required attraction group absent",
+        "eligible": 0,
+        "required": 1,
+        "group": {
+          "name": "休闲体验最高评分",
+          "selection": "top_k",
+          "count": 1,
+          "constraints": [
+            {
+              "field": "attraction_type",
+              "op": "==",
+              "value": "休闲体验",
+              "source_text": "'休闲体验'类的景点"
+            }
+          ],
+          "objective": {
+            "field": "rating",
+            "sense": "max",
+            "source_text": "选一个评分最高的安排进去吧"
+          },
+          "source_text": "'休闲体验'类的景点，选一个评分最高的安排进去吧"
+        }
+      }
+    ],
+    "missing_fact_keys": []
+  },
+  "failure": {
+    "reason": "structured_solver_failed",
+    "last_status": "INFEASIBLE",
+    "last_reason": "symbolic constraint propagation failed",
+    "conflict": {
+      "kind": "symbolic_infeasible",
+      "constraints": [
+        {
+          "constraint_id": "attractions.coverage",
+          "kind": "attraction_coverage",
+          "reason": "required attraction group absent",
+          "eligible": 0,
+          "required": 1,
+          "group": {
+            "name": "休闲体验最高评分",
+            "selection": "top_k",
+            "count": 1,
+            "constraints": [
+              {
+                "field": "attraction_type",
+                "op": "==",
+                "value": "休闲体验",
+                "source_text": "'休闲体验'类的景点"
+              }
+            ],
+            "objective": {
+              "field": "rating",
+              "sense": "max",
+              "source_text": "选一个评分最高的安排进去吧"
+            },
+            "source_text": "'休闲体验'类的景点，选一个评分最高的安排进去吧"
+          }
+        }
+      ]
+    }
+  }
+}

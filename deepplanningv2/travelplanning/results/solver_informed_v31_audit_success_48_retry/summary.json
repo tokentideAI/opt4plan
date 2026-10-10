@@ -1,0 +1,529 @@
+{
+  "total": 1,
+  "success": 0,
+  "failed": 1,
+  "avg_llm_calls": 2.0,
+  "avg_tool_calls": 11.0,
+  "results": [
+    {
+      "id": "id_48",
+      "query": "我打算2025年11月12号从乌鲁木齐去上海玩，15号回。你帮我规划一下全程的行程吧，包括交通、酒店、吃饭和景点的安排。\n\n关于交通，回程航班我希望能晚一点到乌鲁木齐，最好是在晚上8点到12点之间到达，这样能多留点时间在上海玩。\n\n住的地方预算控制在每晚900到930元之间，帮我找个这个价位里性价比高的酒店就行，我一个人住一间房就够了。\n\n景点的话，有几个地方我一定要去，一个是‘西岸美术馆’，一个是‘正大广场’。另外，我也想去逛逛上海的标志性地标，你帮我找一下‘城市地标’类里评分最高的景点安排进去吧。\n\n基本上就是这些需求啦，麻烦你直接帮我安排一下详细的行程吧！ 2025年11月12号是周三",
+      "model": "deepseek-flash",
+      "language": "zh",
+      "final_plan": "",
+      "success": false,
+      "problem_ir": {
+        "trip": {
+          "origin": "乌鲁木齐",
+          "destination": "上海",
+          "start_date": "2025-11-12",
+          "end_date": "2025-11-15",
+          "travelers": 1,
+          "rooms": 1,
+          "budget_max": null,
+          "currency": "RMB"
+        },
+        "transport": {
+          "outbound": {
+            "allowed_modes": [
+              "flight",
+              "train"
+            ],
+            "constraints": [],
+            "soft_preferences": [],
+            "objective": null
+          },
+          "return": {
+            "allowed_modes": [
+              "flight",
+              "train"
+            ],
+            "constraints": [
+              {
+                "field": "arrival_time",
+                "op": ">=",
+                "value": 1200,
+                "source_text": "晚上8点到12点之间到达",
+                "value_type": "minutes_since_midnight"
+              },
+              {
+                "field": "arrival_time",
+                "op": "<=",
+                "value": 1439,
+                "source_text": "晚上8点到12点之间到达",
+                "value_type": "minutes_since_midnight"
+              }
+            ],
+            "soft_preferences": [],
+            "objective": null
+          }
+        },
+        "hotel": {
+          "constraints": [
+            {
+              "field": "price",
+              "op": ">=",
+              "value": 900.0,
+              "source_text": "每晚900到930元之间"
+            },
+            {
+              "field": "price",
+              "op": "<=",
+              "value": 930.0,
+              "source_text": "每晚900到930元之间"
+            }
+          ],
+          "soft_preferences": [],
+          "objective": {
+            "field": "rating",
+            "sense": "max",
+            "source_text": "性价比高",
+            "soft": false
+          }
+        },
+        "attractions": {
+          "count": null,
+          "selection": "named_and_top_k",
+          "required_names": [
+            "西岸美术馆",
+            "正大广场"
+          ],
+          "constraints": [
+            {
+              "field": "attraction_type",
+              "op": "==",
+              "value": "城市地标",
+              "source_text": "‘城市地标’类里评分最高的景点"
+            }
+          ],
+          "soft_preferences": [],
+          "objective": {
+            "field": "rating",
+            "sense": "max",
+            "source_text": "评分最高的景点",
+            "scope": {
+              "field": "attraction_type",
+              "op": "==",
+              "value": "城市地标",
+              "source_text": "‘城市地标’类里评分最高的景点"
+            },
+            "top_k": 1,
+            "soft": false
+          },
+          "required_groups": []
+        },
+        "restaurants": {
+          "requirements": [
+            {
+              "required_name": null,
+              "nearby_location": null,
+              "constraints": [],
+              "objective": null,
+              "soft_preferences": []
+            }
+          ]
+        },
+        "global_constraints": [],
+        "explicit_preferences": []
+      },
+      "metrics": {
+        "llm_calls": 2,
+        "api_attempts": 2,
+        "input_tokens": 2069,
+        "output_tokens": 1424,
+        "total_tokens": 3493,
+        "tool_calls": 11,
+        "tool_calls_by_name": {
+          "query_flight_info": 2,
+          "query_train_info": 2,
+          "query_hotel_info": 1,
+          "recommend_attractions": 1,
+          "recommend_restaurants": 3,
+          "query_attraction_details": 2
+        },
+        "tool_errors": 0,
+        "duplicate_tool_calls_avoided": 0,
+        "solver_rounds": 0,
+        "master_assignments": 0,
+        "master_day_cuts": 0,
+        "constraint_propagations": 1,
+        "constraint_false": 1,
+        "constraint_unknown": 1,
+        "fastcheck_fact_requests": 0,
+        "frontier_states": 0,
+        "shared_fact_requests": 0,
+        "solver_runtime": 0.0,
+        "solver_backend": "gurobi",
+        "route_queries": 0,
+        "parser_success": true,
+        "parser_attempts": 1,
+        "parser_validation_errors": [],
+        "semantic_audit_calls": 1,
+        "semantic_audit_repairs": 1,
+        "semantic_audit_rejected": 0,
+        "constraint_repair_calls": 0,
+        "constraint_repairs_applied": 0,
+        "constraint_repairs_rejected": 0,
+        "verification_success": false,
+        "fallback_used": false,
+        "elapsed_time": 5.577606916427612
+      },
+      "semantic_events": [
+        {
+          "stage": "semantic_audit",
+          "verdict": "REPAIR",
+          "issues": [
+            {
+              "kind": "objective",
+              "source_text": "评分最高的景点",
+              "reason": "The request asks for the highest-rated 城市地标 attraction, but the IR has no optimization objective for attractions and puts the type filter only as a constraint."
+            },
+            {
+              "kind": "scope",
+              "source_text": "‘城市地标’类里评分最高的景点",
+              "reason": "The highest-rated selection should apply specifically within the 城市地标 category, not just be a filtering constraint without a top-1 objective."
+            },
+            {
+              "kind": "incorrect",
+              "source_text": "晚上8点到12点之间到达",
+              "reason": "The upper bound for 12点 should be 24:00/end of day, not 1440 minutes, because 1440 minutes since midnight represents the start of the next day, not the inclusive end of the 8 PM–12 AM window."
+            }
+          ],
+          "applied": true
+        }
+      ],
+      "verification": null,
+      "state_summary": {
+        "counts": {
+          "flight": 20,
+          "train": 0,
+          "hotel": 20,
+          "attraction": 2,
+          "restaurant": 23,
+          "route": 0,
+          "location": 0
+        },
+        "queried_keys": [
+          "attractions:上海:城市地标",
+          "details:attraction:上海之巅观光厅",
+          "details:attraction:正大广场",
+          "hotels:上海:2025-11-12:2025-11-15:None:None",
+          "outbound:flight:乌鲁木齐:上海:2025-11-12",
+          "outbound:train:乌鲁木齐:上海:2025-11-12",
+          "restaurants:generic:31.233487,121.505317",
+          "restaurants:generic:31.236752,121.499170",
+          "restaurants:hotel:31.218752,121.417159:0",
+          "return:flight:上海:乌鲁木齐:2025-11-15",
+          "return:train:上海:乌鲁木齐:2025-11-15"
+        ],
+        "failed_requests": {},
+        "sample_records": {
+          "flight": [
+            {
+              "name": "UQ2599",
+              "price": 710.0,
+              "rating": null,
+              "city": null,
+              "address": null,
+              "opening_time": null,
+              "closing_time": null,
+              "mode": "flight",
+              "origin": "乌鲁木齐",
+              "destination": "上海",
+              "departure_station": "乌鲁木齐天山国际机场",
+              "arrival_station": "浦东国际机场",
+              "departure_time": 595,
+              "arrival_time": 870,
+              "departure_date": "2025-11-12",
+              "arrival_date": "2025-11-12",
+              "duration": 275,
+              "direct": true,
+              "seat_class": "经济舱",
+              "train_type": "海航｜乌航",
+              "seat_status": Infinity,
+              "segments": [
+                {
+                  "arrCityName": "上海",
+                  "arrStationCode": "PVG",
+                  "arrStationName": "浦东国际机场",
+                  "depCityName": "乌鲁木齐",
+                  "depStationCode": "URC",
+                  "depStationName": "乌鲁木齐天山国际机场",
+                  "duration": 275,
+                  "arrDateTime": "2025-11-12 14:30:00",
+                  "depDateTime": "2025-11-12 09:55:00",
+                  "marketingTransportName": "海航｜乌航",
+                  "marketingTransportNo": "UQ2599",
+                  "seatClassName": "经济舱",
+                  "剩余票数量": "充足",
+                  "equipSize": "中型机",
+                  "equipType": "737",
+                  "manufacturer": "波音"
+                }
+              ]
+            },
+            {
+              "name": "HU4505",
+              "price": 710.0,
+              "rating": null,
+              "city": null,
+              "address": null,
+              "opening_time": null,
+              "closing_time": null,
+              "mode": "flight",
+              "origin": "乌鲁木齐",
+              "destination": "上海",
+              "departure_station": "乌鲁木齐天山国际机场",
+              "arrival_station": "浦东国际机场",
+              "departure_time": 595,
+              "arrival_time": 870,
+              "departure_date": "2025-11-12",
+              "arrival_date": "2025-11-12",
+              "duration": 275,
+              "direct": true,
+              "seat_class": "经济舱",
+              "train_type": "海航｜海南航空",
+              "seat_status": Infinity,
+              "segments": [
+                {
+                  "arrCityName": "上海",
+                  "arrStationCode": "PVG",
+                  "arrStationName": "浦东国际机场",
+                  "depCityName": "乌鲁木齐",
+                  "depStationCode": "URC",
+                  "depStationName": "乌鲁木齐天山国际机场",
+                  "duration": 275,
+                  "arrDateTime": "2025-11-12 14:30:00",
+                  "depDateTime": "2025-11-12 09:55:00",
+                  "marketingTransportName": "海航｜海南航空",
+                  "marketingTransportNo": "HU4505",
+                  "seatClassName": "经济舱",
+                  "剩余票数量": "充足",
+                  "equipSize": "中型机",
+                  "equipType": "737",
+                  "manufacturer": "波音"
+                }
+              ]
+            },
+            {
+              "name": "FM9224",
+              "price": 912.0,
+              "rating": null,
+              "city": null,
+              "address": null,
+              "opening_time": null,
+              "closing_time": null,
+              "mode": "flight",
+              "origin": "乌鲁木齐",
+              "destination": "上海",
+              "departure_station": "乌鲁木齐天山国际机场",
+              "arrival_station": "虹桥国际机场",
+              "departure_time": 1150,
+              "arrival_time": 1435,
+              "departure_date": "2025-11-12",
+              "arrival_date": "2025-11-12",
+              "duration": 285,
+              "direct": true,
+              "seat_class": "经济舱",
+              "train_type": "上航",
+              "seat_status": Infinity,
+              "segments": [
+                {
+                  "arrCityName": "上海",
+                  "arrStationCode": "SHA",
+                  "arrStationName": "虹桥国际机场",
+                  "depCityName": "乌鲁木齐",
+                  "depStationCode": "URC",
+                  "depStationName": "乌鲁木齐天山国际机场",
+                  "duration": 285,
+                  "arrDateTime": "2025-11-12 23:55:00",
+                  "depDateTime": "2025-11-12 19:10:00",
+                  "marketingTransportName": "上航",
+                  "marketingTransportNo": "FM9224",
+                  "seatClassName": "经济舱",
+                  "剩余票数量": "充足",
+                  "equipSize": "中型机",
+                  "equipType": "737",
+                  "manufacturer": "波音"
+                }
+              ]
+            }
+          ],
+          "hotel": [
+            {
+              "name": "上海虹桥国展北新泾地铁站亚朵酒店",
+              "price": 729.0,
+              "rating": 4.8,
+              "city": null,
+              "address": "上海市长宁区天山西路173号",
+              "opening_time": null,
+              "closing_time": null,
+              "lat": 31.216722,
+              "lon": 121.373111,
+              "star": 4.0,
+              "services": [],
+              "brand": "亚朵",
+              "decoration_year": 2018.0
+            },
+            {
+              "name": "上海北外滩滨江国际广场亚朵酒店（V4.0）",
+              "price": 563.0,
+              "rating": 4.5,
+              "city": null,
+              "address": "上海市杨浦区杨树浦路1066号",
+              "opening_time": null,
+              "closing_time": null,
+              "lat": 31.252549,
+              "lon": 121.530663,
+              "star": 4.0,
+              "services": [],
+              "brand": "亚朵",
+              "decoration_year": 2025.0
+            },
+            {
+              "name": "上海金桥海昌企鹅万信酒店",
+              "price": 680.0,
+              "rating": 4.2,
+              "city": null,
+              "address": "上海市浦东新区腾波路555弄47号",
+              "opening_time": null,
+              "closing_time": null,
+              "lat": 30.947674,
+              "lon": 121.930058,
+              "star": 5.0,
+              "services": [],
+              "brand": "",
+              "decoration_year": 2024.0
+            }
+          ],
+          "attraction": [
+            {
+              "name": "正大广场",
+              "price": 0.0,
+              "rating": 4.8,
+              "city": "上海",
+              "address": "nan",
+              "opening_time": 600,
+              "closing_time": 1320,
+              "lat": 31.236752,
+              "lon": 121.49917,
+              "min_duration": 60,
+              "max_duration": 150,
+              "cuisine": null,
+              "tags": [],
+              "nearby_location": null,
+              "attraction_type": "城市地标",
+              "closing_dates": "nan"
+            },
+            {
+              "name": "上海之巅观光厅",
+              "price": 90.0,
+              "rating": 4.6,
+              "city": "上海",
+              "address": "nan",
+              "opening_time": 510,
+              "closing_time": 1320,
+              "lat": 31.233487,
+              "lon": 121.505317,
+              "min_duration": 90,
+              "max_duration": 180,
+              "cuisine": null,
+              "tags": [],
+              "nearby_location": null,
+              "attraction_type": "城市地标",
+              "closing_dates": "nan"
+            }
+          ],
+          "restaurant": [
+            {
+              "name": "上海龙之梦万丽酒店祖蓝餐厅",
+              "price": 129.0,
+              "rating": 4.1,
+              "city": null,
+              "address": null,
+              "opening_time": 360,
+              "closing_time": 600,
+              "lat": 31.218766,
+              "lon": 121.417068,
+              "min_duration": null,
+              "max_duration": null,
+              "cuisine": "餐饮服务;外国餐厅;其它亚洲菜",
+              "tags": [],
+              "nearby_location": "上海龙之梦万丽酒店",
+              "attraction_type": null
+            },
+            {
+              "name": "点都德(龙之梦店)",
+              "price": 88.0,
+              "rating": 4.5,
+              "city": null,
+              "address": null,
+              "opening_time": 570,
+              "closing_time": 1290,
+              "lat": 31.218847,
+              "lon": 121.417045,
+              "min_duration": null,
+              "max_duration": null,
+              "cuisine": "餐饮服务;快餐厅;快餐厅",
+              "tags": [],
+              "nearby_location": "上海龙之梦万丽酒店",
+              "attraction_type": null
+            },
+            {
+              "name": "泰极泰国餐厅(上海龙之梦大厦店)",
+              "price": 116.0,
+              "rating": 3.6,
+              "city": null,
+              "address": null,
+              "opening_time": 660,
+              "closing_time": 1320,
+              "lat": 31.218866,
+              "lon": 121.416997,
+              "min_duration": null,
+              "max_duration": null,
+              "cuisine": "餐饮服务;外国餐厅;泰国/越南菜品餐厅",
+              "tags": [],
+              "nearby_location": "上海龙之梦万丽酒店",
+              "attraction_type": null
+            }
+          ]
+        }
+      },
+      "solution": null,
+      "constraint_summary": {
+        "truth": "UNSAT",
+        "satisfied": 12,
+        "unresolved": 1,
+        "conflicts": [
+          {
+            "constraint_id": "attractions.coverage",
+            "kind": "attraction_coverage",
+            "reason": "required attraction absent",
+            "missing_names": [
+              "西岸美术馆"
+            ]
+          }
+        ],
+        "missing_fact_keys": []
+      },
+      "failure": {
+        "reason": "structured_solver_failed",
+        "last_status": "INFEASIBLE",
+        "last_reason": "symbolic constraint propagation failed",
+        "conflict": {
+          "kind": "symbolic_infeasible",
+          "constraints": [
+            {
+              "constraint_id": "attractions.coverage",
+              "kind": "attraction_coverage",
+              "reason": "required attraction absent",
+              "missing_names": [
+                "西岸美术馆"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

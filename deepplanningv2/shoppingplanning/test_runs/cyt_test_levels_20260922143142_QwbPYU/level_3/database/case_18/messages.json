@@ -1,0 +1,1526 @@
+{
+  "step": 50,
+  "description": "Verified deterministic Level-3 solution",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are repairing a shopping cart after a structured planner\nreported a specific error. Use the supplied repair context and tools to satisfy every product slot\nand reproduce a valid product-and-coupon plan. Respect coupon ownership, VIP eligibility, combined\nthreshold usage, and quantities. Verify the final cart and finish with one JSON object."
+    },
+    {
+      "role": "user",
+      "content": "I'm preparing for a multi-season outdoor adventure and need to pick up several items online. First, I'm looking for a popular product with strong customer approval—it must have monthly sales exceeding 400 and more than 700 five-star reviews. Next, I need something specifically called Men's XT-Quest All-Terrain Bottoms in size L, and I'm particular about it having exactly 11 three-star ratings in its distribution. Then, I'm searching for an all-seasons item with the name Trail Explorer that has accumulated more than 400 total reviews to ensure it's well-tested. Finally, I need a winter product called Men's UA HOVR™ Phantom Winter Running Shoes with over 250 total reviews, but I'm being very selective about quality—it must have fewer than 2 one-star ratings and fewer than 3 two-star ratings to ensure minimal negative feedback."
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_761a9f63b7184d7081f6933d",
+          "type": "function",
+          "function": {
+            "name": "get_user_info",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_761a9f63b7184d7081f6933d",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"username\": \"Alex_L\",\n  \"phone_number\": \"+86 13917823456\",\n  \"is_vip\": true,\n  \"demographics\": {\n    \"gender\": \"Male\",\n    \"age\": 29,\n    \"birthday\": \"1996-07-22\"\n  },\n  \"body_profile\": {\n    \"height_cm\": 188,\n    \"weight_kg\": 72,\n    \"preference_fit\": \"Slim Fit\",\n    \"standard_sizes\": {\n      \"tops\": \"L\",\n      \"bottoms\": \"L\",\n      \"shoes\": \"44\"\n    }\n  },\n  \"coupons\": {\n    \"Cross-store: ¥120 off every ¥900\": 1\n  },\n  \"shipping_addresses\": {\n    \"phone\": \"+86 13917823456\",\n    \"province\": \"Shanghai\",\n    \"city\": \"Shanghai\",\n    \"detail_address\": \"Pudong New Area, Century Avenue, No. 88, Suite 2105\"\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_adc083c1080b42c2b9c7aabc",
+          "type": "function",
+          "function": {
+            "name": "filter_by_range",
+            "arguments": "{\"condition_key\": \"sales_volume.monthly\", \"operator\": \">\", \"value\": 400}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_adc083c1080b42c2b9c7aabc",
+      "content": "{\"input_count\": 176, \"total_count\": 94, \"returned_count\": 94, \"is_exhaustive\": true, \"id_count\": 94, \"sample_product_ids\": [\"f097aa09\", \"54b6f9ce\", \"8d5362d8\", \"bd639047\", \"bd663771\", \"cfa001fe\", \"1b91e3c2\", \"21bbdb5c\", \"0e7b170f\", \"f6ef52d7\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_757454386b414c7ba4d43ff1",
+          "type": "function",
+          "function": {
+            "name": "filter_by_range",
+            "arguments": "{\"condition_key\": \"rating.distribution.5_star\", \"operator\": \">\", \"value\": 700, \"product_ids\": [\"f097aa09\", \"54b6f9ce\", \"8d5362d8\", \"bd639047\", \"bd663771\", \"cfa001fe\", \"1b91e3c2\", \"21bbdb5c\", \"0e7b170f\", \"f6ef52d7\", \"71a23e6a\", \"c7f51f45\", \"65b63df0\", \"a249dc23\", \"aadf71ee\", \"5ee25204\", \"13ef218a\", \"11cf0c2d\", \"75bfb915\", \"b4ad4c47\", \"2e1cf554\", \"54ae3f55\", \"bf287c69\", \"2207726d\", \"a27637d0\", \"35c55cfa\", \"99d71be5\", \"a3acad45\", \"cd2b1260\", \"7cab5f99\", \"cc096bac\", \"79910f1e\", \"56eb9665\", \"1541eebb\", \"337c5fae\", \"c2596a10\", \"c0ee59dd\", \"ee320122\", \"e212e65a\", \"34da1385\", \"d03b3335\", \"3b9a76fb\", \"e51236bf\", \"0cb71502\", \"36e68c29\", \"73c8e0b0\", \"ba76f8ff\", \"b1e1b400\", \"eaac5bec\", \"da21eac5\", \"15e30dc0\", \"094419bc\", \"3fd2ebbd\", \"2534f797\", \"e61d33f0\", \"af5caa0a\", \"f33ab2fa\", \"110e7a62\", \"396693f2\", \"45214080\", \"2c8025f9\", \"195c72f2\", \"beac4616\", \"4a8bc242\", \"7a74ef4e\", \"e263133e\", \"56d103cf\", \"a09693a4\", \"1545978d\", \"b8ad46bb\", \"fe7a4f2f\", \"a1334384\", \"3132bce1\", \"6bf4bab5\", \"704de8f2\", \"25807ae2\", \"520aa371\", \"47e357f5\", \"870283ab\", \"e42d5e53\", \"fd256474\", \"8a8d3ac6\", \"3f698f1a\", \"60fc7af3\", \"f5f47171\", \"78994bec\", \"f5e2db99\", \"661d4d55\", \"bc22cb3f\", \"caf70469\", \"9b41a362\", \"43d8535a\", \"7d5377fa\", \"9b5e7bb3\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_757454386b414c7ba4d43ff1",
+      "content": "{\"input_count\": 94, \"total_count\": 58, \"returned_count\": 58, \"is_exhaustive\": true, \"id_count\": 58, \"sample_product_ids\": [\"f6ef52d7\", \"c7f51f45\", \"5ee25204\", \"13ef218a\", \"11cf0c2d\", \"75bfb915\", \"b4ad4c47\", \"54ae3f55\", \"2207726d\", \"a27637d0\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_2af5a169fb624feb8368304a",
+          "type": "function",
+          "function": {
+            "name": "sort_products",
+            "arguments": "{\"sort_by\": \"price\", \"order\": \"asc\", \"product_ids\": [\"f6ef52d7\", \"c7f51f45\", \"5ee25204\", \"13ef218a\", \"11cf0c2d\", \"75bfb915\", \"b4ad4c47\", \"54ae3f55\", \"2207726d\", \"a27637d0\", \"35c55cfa\", \"99d71be5\", \"a3acad45\", \"cd2b1260\", \"7cab5f99\", \"79910f1e\", \"1541eebb\", \"c2596a10\", \"c0ee59dd\", \"ee320122\", \"e212e65a\", \"e51236bf\", \"36e68c29\", \"73c8e0b0\", \"ba76f8ff\", \"b1e1b400\", \"eaac5bec\", \"da21eac5\", \"15e30dc0\", \"094419bc\", \"2534f797\", \"f33ab2fa\", \"110e7a62\", \"396693f2\", \"45214080\", \"beac4616\", \"4a8bc242\", \"7a74ef4e\", \"e263133e\", \"56d103cf\", \"a09693a4\", \"a1334384\", \"3132bce1\", \"704de8f2\", \"47e357f5\", \"870283ab\", \"e42d5e53\", \"fd256474\", \"3f698f1a\", \"60fc7af3\", \"f5f47171\", \"78994bec\", \"661d4d55\", \"bc22cb3f\", \"caf70469\", \"9b41a362\", \"7d5377fa\", \"9b5e7bb3\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_2af5a169fb624feb8368304a",
+      "content": "{\"total_count\": 58, \"returned_count\": 58, \"is_exhaustive\": true, \"id_count\": 58, \"sample_product_ids\": [\"c7f51f45\", \"1541eebb\", \"f6ef52d7\", \"b4ad4c47\", \"3132bce1\", \"eaac5bec\", \"7d5377fa\", \"661d4d55\", \"9b5e7bb3\", \"a27637d0\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_56c3fc23a4204921b4de3a8f",
+          "type": "function",
+          "function": {
+            "name": "get_product_details",
+            "arguments": "{\"product_ids\": [\"c7f51f45\", \"1541eebb\", \"f6ef52d7\", \"b4ad4c47\", \"3132bce1\", \"eaac5bec\", \"7d5377fa\", \"661d4d55\", \"9b5e7bb3\", \"a27637d0\", \"c2596a10\", \"15e30dc0\", \"f33ab2fa\", \"396693f2\", \"56d103cf\", \"79910f1e\", \"2534f797\", \"bc22cb3f\", \"e263133e\", \"7a74ef4e\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_56c3fc23a4204921b4de3a8f",
+      "content": "{\"product_count\": 20, \"product_ids\": [\"c7f51f45\", \"1541eebb\", \"f6ef52d7\", \"b4ad4c47\", \"3132bce1\", \"eaac5bec\", \"7d5377fa\", \"661d4d55\", \"9b5e7bb3\", \"a27637d0\", \"c2596a10\", \"15e30dc0\", \"f33ab2fa\", \"396693f2\", \"56d103cf\", \"79910f1e\", \"2534f797\", \"bc22cb3f\", \"e263133e\", \"7a74ef4e\"], \"details_stored_in_planner_memory\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_d29fd3d0ebfa4590bfab6299",
+          "type": "function",
+          "function": {
+            "name": "get_product_details",
+            "arguments": "{\"product_ids\": [\"13ef218a\", \"2207726d\", \"110e7a62\", \"54ae3f55\", \"78994bec\", \"ee320122\", \"75bfb915\", \"9b41a362\", \"b1e1b400\", \"beac4616\", \"3f698f1a\", \"36e68c29\", \"35c55cfa\", \"5ee25204\", \"7cab5f99\", \"ba76f8ff\", \"45214080\", \"4a8bc242\", \"cd2b1260\", \"73c8e0b0\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_d29fd3d0ebfa4590bfab6299",
+      "content": "{\"product_count\": 20, \"product_ids\": [\"13ef218a\", \"2207726d\", \"110e7a62\", \"54ae3f55\", \"78994bec\", \"ee320122\", \"75bfb915\", \"9b41a362\", \"b1e1b400\", \"beac4616\", \"3f698f1a\", \"36e68c29\", \"35c55cfa\", \"5ee25204\", \"7cab5f99\", \"ba76f8ff\", \"45214080\", \"4a8bc242\", \"cd2b1260\", \"73c8e0b0\"], \"details_stored_in_planner_memory\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_060c956a3e0a44f4a7b975e4",
+          "type": "function",
+          "function": {
+            "name": "get_product_details",
+            "arguments": "{\"product_ids\": [\"99d71be5\", \"e212e65a\", \"704de8f2\", \"47e357f5\", \"11cf0c2d\", \"c0ee59dd\", \"e51236bf\", \"a1334384\", \"f5f47171\", \"caf70469\", \"a09693a4\", \"870283ab\", \"e42d5e53\", \"fd256474\", \"a3acad45\", \"da21eac5\", \"094419bc\", \"60fc7af3\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_060c956a3e0a44f4a7b975e4",
+      "content": "{\"product_count\": 18, \"product_ids\": [\"99d71be5\", \"e212e65a\", \"704de8f2\", \"47e357f5\", \"11cf0c2d\", \"c0ee59dd\", \"e51236bf\", \"a1334384\", \"f5f47171\", \"caf70469\", \"a09693a4\", \"870283ab\", \"e42d5e53\", \"fd256474\", \"a3acad45\", \"da21eac5\", \"094419bc\", \"60fc7af3\"], \"details_stored_in_planner_memory\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_3531d4617fe14bc68a5985a9",
+          "type": "function",
+          "function": {
+            "name": "filter_by_text",
+            "arguments": "{\"condition_key\": \"name\", \"operator\": \"contains\", \"value\": \"Men's XT-Quest All-Terrain Bottoms\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_3531d4617fe14bc68a5985a9",
+      "content": "{\"input_count\": 176, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"a59cc66d\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_6dfe25ccdc3d4016b970f67f",
+          "type": "function",
+          "function": {
+            "name": "filter_by_size",
+            "arguments": "{\"sizes\": [\"L\"], \"product_ids\": [\"a59cc66d\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_6dfe25ccdc3d4016b970f67f",
+      "content": "{\"input_count\": 1, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"a59cc66d\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_77bbf14aa26949d8a04b0e9f",
+          "type": "function",
+          "function": {
+            "name": "filter_by_range",
+            "arguments": "{\"condition_key\": \"rating.distribution.3_star\", \"operator\": \"==\", \"value\": 11, \"product_ids\": [\"a59cc66d\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_77bbf14aa26949d8a04b0e9f",
+      "content": "{\"input_count\": 1, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"a59cc66d\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_7a25cff8c23540328d060227",
+          "type": "function",
+          "function": {
+            "name": "sort_products",
+            "arguments": "{\"sort_by\": \"price\", \"order\": \"asc\", \"product_ids\": [\"a59cc66d\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_7a25cff8c23540328d060227",
+      "content": "{\"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"a59cc66d\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_7a1470b1b7934df4a867a828",
+          "type": "function",
+          "function": {
+            "name": "get_product_details",
+            "arguments": "{\"product_ids\": [\"a59cc66d\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_7a1470b1b7934df4a867a828",
+      "content": "{\"product_count\": 1, \"product_ids\": [\"a59cc66d\"], \"details_stored_in_planner_memory\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_b6f9124785be499ea4c95e04",
+          "type": "function",
+          "function": {
+            "name": "filter_by_text",
+            "arguments": "{\"condition_key\": \"name\", \"operator\": \"contains\", \"value\": \"Trail Explorer\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_b6f9124785be499ea4c95e04",
+      "content": "{\"input_count\": 176, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"1358df77\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_11cd2c0982d6437bb2064079",
+          "type": "function",
+          "function": {
+            "name": "filter_by_text",
+            "arguments": "{\"condition_key\": \"suitable_season\", \"operator\": \"==\", \"value\": \"all seasons\", \"product_ids\": [\"1358df77\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_11cd2c0982d6437bb2064079",
+      "content": "{\"input_count\": 1, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"1358df77\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_4ededac1326046cb9d434024",
+          "type": "function",
+          "function": {
+            "name": "filter_by_range",
+            "arguments": "{\"condition_key\": \"rating.total_reviews\", \"operator\": \">\", \"value\": 400, \"product_ids\": [\"1358df77\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_4ededac1326046cb9d434024",
+      "content": "{\"input_count\": 1, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"1358df77\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_c3f4d2993c774b2291e262fd",
+          "type": "function",
+          "function": {
+            "name": "sort_products",
+            "arguments": "{\"sort_by\": \"price\", \"order\": \"asc\", \"product_ids\": [\"1358df77\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_c3f4d2993c774b2291e262fd",
+      "content": "{\"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"1358df77\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_26f05ba98c174a9c9440f6cc",
+          "type": "function",
+          "function": {
+            "name": "get_product_details",
+            "arguments": "{\"product_ids\": [\"1358df77\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_26f05ba98c174a9c9440f6cc",
+      "content": "{\"product_count\": 1, \"product_ids\": [\"1358df77\"], \"details_stored_in_planner_memory\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_af59dc813da749eca8930339",
+          "type": "function",
+          "function": {
+            "name": "filter_by_text",
+            "arguments": "{\"condition_key\": \"name\", \"operator\": \"contains\", \"value\": \"Men's UA HOVR™ Phantom Winter Running Shoes\"}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_af59dc813da749eca8930339",
+      "content": "{\"input_count\": 176, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"db50f2ed\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_681790c9fdba487f917f9422",
+          "type": "function",
+          "function": {
+            "name": "filter_by_text",
+            "arguments": "{\"condition_key\": \"suitable_season\", \"operator\": \"==\", \"value\": \"winter\", \"product_ids\": [\"db50f2ed\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_681790c9fdba487f917f9422",
+      "content": "{\"input_count\": 1, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"db50f2ed\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_59e7099658ac49289d4770cd",
+          "type": "function",
+          "function": {
+            "name": "filter_by_range",
+            "arguments": "{\"condition_key\": \"rating.total_reviews\", \"operator\": \">\", \"value\": 250, \"product_ids\": [\"db50f2ed\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_59e7099658ac49289d4770cd",
+      "content": "{\"input_count\": 1, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"db50f2ed\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_8fde4420c9e14eb0a7ec2ecb",
+          "type": "function",
+          "function": {
+            "name": "filter_by_range",
+            "arguments": "{\"condition_key\": \"rating.distribution.1_star\", \"operator\": \"<\", \"value\": 2, \"product_ids\": [\"db50f2ed\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_8fde4420c9e14eb0a7ec2ecb",
+      "content": "{\"input_count\": 1, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"db50f2ed\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_3e808393e2814af59e8762ff",
+          "type": "function",
+          "function": {
+            "name": "filter_by_range",
+            "arguments": "{\"condition_key\": \"rating.distribution.2_star\", \"operator\": \"<\", \"value\": 3, \"product_ids\": [\"db50f2ed\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_3e808393e2814af59e8762ff",
+      "content": "{\"input_count\": 1, \"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"db50f2ed\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_9b9e25b956f44745bc1ae9b2",
+          "type": "function",
+          "function": {
+            "name": "sort_products",
+            "arguments": "{\"sort_by\": \"price\", \"order\": \"asc\", \"product_ids\": [\"db50f2ed\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_9b9e25b956f44745bc1ae9b2",
+      "content": "{\"total_count\": 1, \"returned_count\": 1, \"is_exhaustive\": true, \"id_count\": 1, \"sample_product_ids\": [\"db50f2ed\"], \"full_ids_consumed_by_deterministic_retriever\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_2d2e8a0e1908411ea7897c0d",
+          "type": "function",
+          "function": {
+            "name": "get_product_details",
+            "arguments": "{\"product_ids\": [\"db50f2ed\"]}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_2d2e8a0e1908411ea7897c0d",
+      "content": "{\"product_count\": 1, \"product_ids\": [\"db50f2ed\"], \"details_stored_in_planner_memory\": true}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_8b3bc5af7f00404abcdf3c51",
+          "type": "function",
+          "function": {
+            "name": "get_cart_info",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_8b3bc5af7f00404abcdf3c51",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"user_name\": \"Alex_L\",\n  \"items\": [],\n  \"used_coupons\": [],\n  \"summary\": {\n    \"total_items_count\": 0,\n    \"total_price\": 0.0\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_41a42687aa964868a2831229",
+          "type": "function",
+          "function": {
+            "name": "get_cart_info",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_41a42687aa964868a2831229",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"user_name\": \"Alex_L\",\n  \"items\": [],\n  \"used_coupons\": [],\n  \"summary\": {\n    \"total_items_count\": 0,\n    \"total_price\": 0.0\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_716bfbe20cb24048bec1c49c",
+          "type": "function",
+          "function": {
+            "name": "add_product_to_cart",
+            "arguments": "{\"product_id\": \"f6ef52d7\", \"quantity\": 1}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_716bfbe20cb24048bec1c49c",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"user_name\": \"Alex_L\",\n  \"items\": [\n    {\n      \"product_id\": \"f6ef52d7\",\n      \"name\": \"Men's National Pride Series Tech Sweatpants\",\n      \"quantity\": 1,\n      \"price\": 218.0\n    }\n  ],\n  \"used_coupons\": [],\n  \"summary\": {\n    \"total_items_count\": 1,\n    \"total_price\": 218.0\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_9f85def45ffe465eb6910195",
+          "type": "function",
+          "function": {
+            "name": "add_product_to_cart",
+            "arguments": "{\"product_id\": \"a59cc66d\", \"quantity\": 1}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_9f85def45ffe465eb6910195",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"user_name\": \"Alex_L\",\n  \"items\": [\n    {\n      \"product_id\": \"f6ef52d7\",\n      \"name\": \"Men's National Pride Series Tech Sweatpants\",\n      \"quantity\": 1,\n      \"price\": 218.0\n    },\n    {\n      \"product_id\": \"a59cc66d\",\n      \"name\": \"Men's XT-Quest All-Terrain Bottoms\",\n      \"quantity\": 1,\n      \"price\": 305.0\n    }\n  ],\n  \"used_coupons\": [],\n  \"summary\": {\n    \"total_items_count\": 2,\n    \"total_price\": 523.0\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_4db7983c130f4fb7b2efe500",
+          "type": "function",
+          "function": {
+            "name": "add_product_to_cart",
+            "arguments": "{\"product_id\": \"1358df77\", \"quantity\": 1}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_4db7983c130f4fb7b2efe500",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"user_name\": \"Alex_L\",\n  \"items\": [\n    {\n      \"product_id\": \"f6ef52d7\",\n      \"name\": \"Men's National Pride Series Tech Sweatpants\",\n      \"quantity\": 1,\n      \"price\": 218.0\n    },\n    {\n      \"product_id\": \"a59cc66d\",\n      \"name\": \"Men's XT-Quest All-Terrain Bottoms\",\n      \"quantity\": 1,\n      \"price\": 305.0\n    },\n    {\n      \"product_id\": \"1358df77\",\n      \"name\": \"Men's Trail Explorer Convertible Pants\",\n      \"quantity\": 1,\n      \"price\": 245.0\n    }\n  ],\n  \"used_coupons\": [],\n  \"summary\": {\n    \"total_items_count\": 3,\n    \"total_price\": 768.0\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_211a0345f79345deb3c6f745",
+          "type": "function",
+          "function": {
+            "name": "add_product_to_cart",
+            "arguments": "{\"product_id\": \"db50f2ed\", \"quantity\": 1}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_211a0345f79345deb3c6f745",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"user_name\": \"Alex_L\",\n  \"items\": [\n    {\n      \"product_id\": \"f6ef52d7\",\n      \"name\": \"Men's National Pride Series Tech Sweatpants\",\n      \"quantity\": 1,\n      \"price\": 218.0\n    },\n    {\n      \"product_id\": \"a59cc66d\",\n      \"name\": \"Men's XT-Quest All-Terrain Bottoms\",\n      \"quantity\": 1,\n      \"price\": 305.0\n    },\n    {\n      \"product_id\": \"1358df77\",\n      \"name\": \"Men's Trail Explorer Convertible Pants\",\n      \"quantity\": 1,\n      \"price\": 245.0\n    },\n    {\n      \"product_id\": \"db50f2ed\",\n      \"name\": \"Men's UA HOVR™ Phantom Winter Running Shoes\",\n      \"quantity\": 1,\n      \"price\": 143.0\n    }\n  ],\n  \"used_coupons\": [],\n  \"summary\": {\n    \"total_items_count\": 4,\n    \"total_price\": 911.0\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_e78f4de635f848e68a28ab80",
+          "type": "function",
+          "function": {
+            "name": "add_coupon_to_cart",
+            "arguments": "{\"coupon_name\": \"Cross-store: ¥120 off every ¥900\", \"quantity\": 1}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_e78f4de635f848e68a28ab80",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"user_name\": \"Alex_L\",\n  \"items\": [\n    {\n      \"product_id\": \"f6ef52d7\",\n      \"name\": \"Men's National Pride Series Tech Sweatpants\",\n      \"quantity\": 1,\n      \"price\": 218.0\n    },\n    {\n      \"product_id\": \"a59cc66d\",\n      \"name\": \"Men's XT-Quest All-Terrain Bottoms\",\n      \"quantity\": 1,\n      \"price\": 305.0\n    },\n    {\n      \"product_id\": \"1358df77\",\n      \"name\": \"Men's Trail Explorer Convertible Pants\",\n      \"quantity\": 1,\n      \"price\": 245.0\n    },\n    {\n      \"product_id\": \"db50f2ed\",\n      \"name\": \"Men's UA HOVR™ Phantom Winter Running Shoes\",\n      \"quantity\": 1,\n      \"price\": 143.0\n    }\n  ],\n  \"used_coupons\": [\n    {\n      \"coupon_name\": \"Cross-store: ¥120 off every ¥900\",\n      \"quantity\": 1\n    }\n  ],\n  \"summary\": {\n    \"total_items_count\": 4,\n    \"total_price\": 791.0\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_5fdab8b99083416aad7d65f4",
+          "type": "function",
+          "function": {
+            "name": "get_cart_info",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_5fdab8b99083416aad7d65f4",
+      "content": "{\n  \"user_id\": \"0c20d4ab\",\n  \"user_name\": \"Alex_L\",\n  \"items\": [\n    {\n      \"product_id\": \"f6ef52d7\",\n      \"name\": \"Men's National Pride Series Tech Sweatpants\",\n      \"quantity\": 1,\n      \"price\": 218.0\n    },\n    {\n      \"product_id\": \"a59cc66d\",\n      \"name\": \"Men's XT-Quest All-Terrain Bottoms\",\n      \"quantity\": 1,\n      \"price\": 305.0\n    },\n    {\n      \"product_id\": \"1358df77\",\n      \"name\": \"Men's Trail Explorer Convertible Pants\",\n      \"quantity\": 1,\n      \"price\": 245.0\n    },\n    {\n      \"product_id\": \"db50f2ed\",\n      \"name\": \"Men's UA HOVR™ Phantom Winter Running Shoes\",\n      \"quantity\": 1,\n      \"price\": 143.0\n    }\n  ],\n  \"used_coupons\": [\n    {\n      \"coupon_name\": \"Cross-store: ¥120 off every ¥900\",\n      \"quantity\": 1\n    }\n  ],\n  \"summary\": {\n    \"total_items_count\": 4,\n    \"total_price\": 791.0\n  }\n}"
+    },
+    {
+      "role": "assistant",
+      "content": "{\"status\": \"success\", \"items\": [{\"slot_id\": 1, \"product_id\": \"f6ef52d7\", \"product_name\": \"Men's National Pride Series Tech Sweatpants\", \"quantity\": 1, \"unit_price\": 218.0}, {\"slot_id\": 2, \"product_id\": \"a59cc66d\", \"product_name\": \"Men's XT-Quest All-Terrain Bottoms\", \"quantity\": 1, \"unit_price\": 305.0}, {\"slot_id\": 3, \"product_id\": \"1358df77\", \"product_name\": \"Men's Trail Explorer Convertible Pants\", \"quantity\": 1, \"unit_price\": 245.0}, {\"slot_id\": 4, \"product_id\": \"db50f2ed\", \"product_name\": \"Men's UA HOVR™ Phantom Winter Running Shoes\", \"quantity\": 1, \"unit_price\": 143.0}], \"total_price\": 791.0, \"coupons\": [{\"coupon_name\": \"Cross-store: ¥120 off every ¥900\", \"quantity\": 1, \"unit_discount\": 120.0, \"threshold\": 900.0}], \"subtotal\": 911.0, \"total_discount\": 120.0}"
+    }
+  ],
+  "planning_state": {
+    "problem_ir": {
+      "slots": [
+        {
+          "slot_id": 1,
+          "quantity": 1,
+          "constraints": [
+            {
+              "field": "sales_volume.monthly",
+              "op": ">",
+              "value": 400,
+              "source_text": "monthly sales exceeding 400"
+            },
+            {
+              "field": "rating.distribution.5_star",
+              "op": ">",
+              "value": 700,
+              "source_text": "more than 700 five-star reviews"
+            }
+          ],
+          "profile_defaults": {
+            "standard_sizes": {
+              "tops": "L",
+              "bottoms": "L",
+              "shoes": "44"
+            },
+            "target_demographic": "Male"
+          }
+        },
+        {
+          "slot_id": 2,
+          "quantity": 1,
+          "constraints": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Men's XT-Quest All-Terrain Bottoms",
+              "source_text": "Men's XT-Quest All-Terrain Bottoms"
+            },
+            {
+              "field": "size",
+              "op": "==",
+              "value": "L",
+              "source_text": "size L"
+            },
+            {
+              "field": "rating.distribution.3_star",
+              "op": "==",
+              "value": 11,
+              "source_text": "exactly 11 three-star ratings"
+            }
+          ],
+          "profile_defaults": {
+            "standard_sizes": {
+              "tops": "L",
+              "bottoms": "L",
+              "shoes": "44"
+            },
+            "target_demographic": "Male"
+          }
+        },
+        {
+          "slot_id": 3,
+          "quantity": 1,
+          "constraints": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Trail Explorer",
+              "source_text": "name Trail Explorer"
+            },
+            {
+              "field": "suitable_season",
+              "op": "==",
+              "value": "all seasons",
+              "source_text": "all-seasons"
+            },
+            {
+              "field": "rating.total_reviews",
+              "op": ">",
+              "value": 400,
+              "source_text": "more than 400 total reviews"
+            }
+          ],
+          "profile_defaults": {
+            "standard_sizes": {
+              "tops": "L",
+              "bottoms": "L",
+              "shoes": "44"
+            },
+            "target_demographic": "Male"
+          }
+        },
+        {
+          "slot_id": 4,
+          "quantity": 1,
+          "constraints": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Men's UA HOVR™ Phantom Winter Running Shoes",
+              "source_text": "Men's UA HOVR™ Phantom Winter Running Shoes"
+            },
+            {
+              "field": "suitable_season",
+              "op": "==",
+              "value": "winter",
+              "source_text": "winter"
+            },
+            {
+              "field": "rating.total_reviews",
+              "op": ">",
+              "value": 250,
+              "source_text": "over 250 total reviews"
+            },
+            {
+              "field": "rating.distribution.1_star",
+              "op": "<",
+              "value": 2,
+              "source_text": "fewer than 2 one-star ratings"
+            },
+            {
+              "field": "rating.distribution.2_star",
+              "op": "<",
+              "value": 3,
+              "source_text": "fewer than 3 two-star ratings"
+            }
+          ],
+          "profile_defaults": {
+            "standard_sizes": {
+              "tops": "L",
+              "bottoms": "L",
+              "shoes": "44"
+            },
+            "target_demographic": "Male"
+          }
+        }
+      ],
+      "global_constraints": {
+        "budget": {
+          "min": null,
+          "max": null
+        }
+      }
+    },
+    "coverage": {
+      "status": "READY",
+      "slots": {
+        "1": {
+          "feasible_candidate_found": true,
+          "candidate_set_complete": true,
+          "optimality_certified": true,
+          "infeasible_certified": false,
+          "total_count": 58,
+          "retrieved_count": 58,
+          "feasible_count": 39,
+          "feasible_target": 58,
+          "candidate_limit": 58,
+          "retrieval_budget_exhausted": false,
+          "pages_exhausted": true,
+          "sort_by": "price",
+          "order": "asc",
+          "all_cheaper_checked": true,
+          "best_product_id": "c7f51f45",
+          "applied_filters": [
+            {
+              "field": "sales_volume.monthly",
+              "op": ">",
+              "value": 400,
+              "tool": "filter_by_range",
+              "is_exhaustive": true
+            },
+            {
+              "field": "rating.distribution.5_star",
+              "op": ">",
+              "value": 700,
+              "tool": "filter_by_range",
+              "is_exhaustive": true
+            }
+          ],
+          "unknown_count": 0,
+          "infeasible_count": 19,
+          "source_exhaustive": true
+        },
+        "2": {
+          "feasible_candidate_found": true,
+          "candidate_set_complete": true,
+          "optimality_certified": true,
+          "infeasible_certified": false,
+          "total_count": 1,
+          "retrieved_count": 1,
+          "feasible_count": 1,
+          "feasible_target": 1,
+          "candidate_limit": 1,
+          "retrieval_budget_exhausted": false,
+          "pages_exhausted": true,
+          "sort_by": "price",
+          "order": "asc",
+          "all_cheaper_checked": true,
+          "best_product_id": "a59cc66d",
+          "applied_filters": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Men's XT-Quest All-Terrain Bottoms",
+              "tool": "filter_by_text",
+              "is_exhaustive": true
+            },
+            {
+              "field": "size",
+              "op": "==",
+              "value": "L",
+              "tool": "filter_by_size",
+              "is_exhaustive": true
+            },
+            {
+              "field": "rating.distribution.3_star",
+              "op": "==",
+              "value": 11,
+              "tool": "filter_by_range",
+              "is_exhaustive": true
+            }
+          ],
+          "unknown_count": 0,
+          "infeasible_count": 0,
+          "source_exhaustive": true
+        },
+        "3": {
+          "feasible_candidate_found": true,
+          "candidate_set_complete": true,
+          "optimality_certified": true,
+          "infeasible_certified": false,
+          "total_count": 1,
+          "retrieved_count": 1,
+          "feasible_count": 1,
+          "feasible_target": 1,
+          "candidate_limit": 1,
+          "retrieval_budget_exhausted": false,
+          "pages_exhausted": true,
+          "sort_by": "price",
+          "order": "asc",
+          "all_cheaper_checked": true,
+          "best_product_id": "1358df77",
+          "applied_filters": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Trail Explorer",
+              "tool": "filter_by_text",
+              "is_exhaustive": true
+            },
+            {
+              "field": "suitable_season",
+              "op": "==",
+              "value": "all seasons",
+              "tool": "filter_by_text",
+              "is_exhaustive": true
+            },
+            {
+              "field": "rating.total_reviews",
+              "op": ">",
+              "value": 400,
+              "tool": "filter_by_range",
+              "is_exhaustive": true
+            }
+          ],
+          "unknown_count": 0,
+          "infeasible_count": 0,
+          "source_exhaustive": true
+        },
+        "4": {
+          "feasible_candidate_found": true,
+          "candidate_set_complete": true,
+          "optimality_certified": true,
+          "infeasible_certified": false,
+          "total_count": 1,
+          "retrieved_count": 1,
+          "feasible_count": 1,
+          "feasible_target": 1,
+          "candidate_limit": 1,
+          "retrieval_budget_exhausted": false,
+          "pages_exhausted": true,
+          "sort_by": "price",
+          "order": "asc",
+          "all_cheaper_checked": true,
+          "best_product_id": "db50f2ed",
+          "applied_filters": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Men's UA HOVR™ Phantom Winter Running Shoes",
+              "tool": "filter_by_text",
+              "is_exhaustive": true
+            },
+            {
+              "field": "suitable_season",
+              "op": "==",
+              "value": "winter",
+              "tool": "filter_by_text",
+              "is_exhaustive": true
+            },
+            {
+              "field": "rating.total_reviews",
+              "op": ">",
+              "value": 250,
+              "tool": "filter_by_range",
+              "is_exhaustive": true
+            },
+            {
+              "field": "rating.distribution.1_star",
+              "op": "<",
+              "value": 2,
+              "tool": "filter_by_range",
+              "is_exhaustive": true
+            },
+            {
+              "field": "rating.distribution.2_star",
+              "op": "<",
+              "value": 3,
+              "tool": "filter_by_range",
+              "is_exhaustive": true
+            }
+          ],
+          "unknown_count": 0,
+          "infeasible_count": 0,
+          "source_exhaustive": true
+        }
+      }
+    },
+    "solution": {
+      "status": "OPTIMAL_OVER_COMPLETE_CANDIDATE_SETS",
+      "solver": "gurobi_product_coupon_milp",
+      "selected_products": [
+        {
+          "slot_id": 1,
+          "product_id": "f6ef52d7",
+          "quantity": 1,
+          "price": 218.0
+        },
+        {
+          "slot_id": 2,
+          "product_id": "a59cc66d",
+          "quantity": 1,
+          "price": 305.0
+        },
+        {
+          "slot_id": 3,
+          "product_id": "1358df77",
+          "quantity": 1,
+          "price": 245.0
+        },
+        {
+          "slot_id": 4,
+          "product_id": "db50f2ed",
+          "quantity": 1,
+          "price": 143.0
+        }
+      ],
+      "selected_coupons": [
+        {
+          "coupon_name": "Cross-store: ¥120 off every ¥900",
+          "quantity": 1,
+          "unit_discount": 120.0,
+          "threshold": 900.0
+        }
+      ],
+      "subtotal": 911.0,
+      "total_discount": 120.0,
+      "objective_value": 791.0,
+      "optimality_scope": "catalog_under_problem_ir",
+      "coupon_policy": "benchmark_threshold_first"
+    },
+    "verification": {
+      "success": true,
+      "errors": [],
+      "optimality_scope": "catalog_under_problem_ir"
+    },
+    "metrics": {
+      "parser_success": true,
+      "parser_attempts": 1,
+      "semantic_parser_repairs": 0,
+      "semantic_repair_enabled": false,
+      "llm_calls": 1,
+      "api_attempts": 1,
+      "input_tokens": 703,
+      "output_tokens": 713,
+      "total_tokens": 1416,
+      "retrieval_calls": 24,
+      "retrieved_products": 61,
+      "product_details_requested": 61,
+      "retrieval_budget": {
+        "frontier_batch_size": 20,
+        "l1_feasible_target": 1,
+        "max_candidates_per_slot": 200,
+        "max_product_details": 800,
+        "max_tool_calls": 250
+      },
+      "verified_candidates": {
+        "1": 39,
+        "2": 1,
+        "3": 1,
+        "4": 1
+      },
+      "retrieval_coverage": 1.0,
+      "coverage_status": {
+        "1": {
+          "feasible_candidate_found": true,
+          "candidate_set_complete": true,
+          "optimality_certified": true,
+          "total_count": 58,
+          "retrieved_count": 58,
+          "infeasible_certified": false,
+          "pages_exhausted": true,
+          "source_exhaustive": true,
+          "all_cheaper_checked": true,
+          "best_product_id": "c7f51f45",
+          "feasible_count": 39,
+          "feasible_target": 58,
+          "candidate_limit": 58,
+          "retrieval_budget_exhausted": false
+        },
+        "2": {
+          "feasible_candidate_found": true,
+          "candidate_set_complete": true,
+          "optimality_certified": true,
+          "total_count": 1,
+          "retrieved_count": 1,
+          "infeasible_certified": false,
+          "pages_exhausted": true,
+          "source_exhaustive": true,
+          "all_cheaper_checked": true,
+          "best_product_id": "a59cc66d",
+          "feasible_count": 1,
+          "feasible_target": 1,
+          "candidate_limit": 1,
+          "retrieval_budget_exhausted": false
+        },
+        "3": {
+          "feasible_candidate_found": true,
+          "candidate_set_complete": true,
+          "optimality_certified": true,
+          "total_count": 1,
+          "retrieved_count": 1,
+          "infeasible_certified": false,
+          "pages_exhausted": true,
+          "source_exhaustive": true,
+          "all_cheaper_checked": true,
+          "best_product_id": "1358df77",
+          "feasible_count": 1,
+          "feasible_target": 1,
+          "candidate_limit": 1,
+          "retrieval_budget_exhausted": false
+        },
+        "4": {
+          "feasible_candidate_found": true,
+          "candidate_set_complete": true,
+          "optimality_certified": true,
+          "total_count": 1,
+          "retrieved_count": 1,
+          "infeasible_certified": false,
+          "pages_exhausted": true,
+          "source_exhaustive": true,
+          "all_cheaper_checked": true,
+          "best_product_id": "db50f2ed",
+          "feasible_count": 1,
+          "feasible_target": 1,
+          "candidate_limit": 1,
+          "retrieval_budget_exhausted": false
+        }
+      },
+      "solver_used": "gurobi_product_coupon_milp",
+      "solver_status": "OPTIMAL_OVER_COMPLETE_CANDIDATE_SETS",
+      "solver_runtime": 0.004045009613037109,
+      "solver_total_runtime": 0.006365060806274414,
+      "gurobi_runtime": 0.004045009613037109,
+      "oracle_runtime": 0.002305746078491211,
+      "oracle_crosscheck_enabled": true,
+      "realization_actions": 5,
+      "verification_success": true,
+      "fallback_used": false
+    },
+    "planning_memory": {
+      "slots": {
+        "1": {
+          "constraints": [
+            {
+              "field": "sales_volume.monthly",
+              "op": ">",
+              "value": 400,
+              "source_text": "monthly sales exceeding 400"
+            },
+            {
+              "field": "rating.distribution.5_star",
+              "op": ">",
+              "value": 700,
+              "source_text": "more than 700 five-star reviews"
+            }
+          ],
+          "candidate_ids": [
+            "c7f51f45",
+            "1541eebb",
+            "f6ef52d7",
+            "7d5377fa",
+            "eaac5bec",
+            "661d4d55",
+            "15e30dc0",
+            "f33ab2fa",
+            "396693f2",
+            "56d103cf",
+            "79910f1e",
+            "2534f797",
+            "bc22cb3f",
+            "e263133e",
+            "13ef218a",
+            "54ae3f55",
+            "78994bec",
+            "ee320122",
+            "75bfb915",
+            "9b41a362",
+            "b1e1b400",
+            "beac4616",
+            "45214080",
+            "4a8bc242",
+            "5ee25204",
+            "7cab5f99",
+            "73c8e0b0",
+            "cd2b1260",
+            "99d71be5",
+            "704de8f2",
+            "47e357f5",
+            "11cf0c2d",
+            "a1334384",
+            "caf70469",
+            "f5f47171",
+            "a09693a4",
+            "e42d5e53",
+            "fd256474",
+            "60fc7af3"
+          ],
+          "unknown_candidate_ids": [],
+          "status": "optimality_certified",
+          "coverage": {
+            "feasible_candidate_found": true,
+            "candidate_set_complete": true,
+            "optimality_certified": true,
+            "infeasible_certified": false,
+            "total_count": 58,
+            "retrieved_count": 58,
+            "feasible_count": 39,
+            "feasible_target": 58,
+            "candidate_limit": 58,
+            "retrieval_budget_exhausted": false,
+            "pages_exhausted": true,
+            "sort_by": "price",
+            "order": "asc",
+            "all_cheaper_checked": true,
+            "best_product_id": "c7f51f45",
+            "applied_filters": [
+              {
+                "field": "sales_volume.monthly",
+                "op": ">",
+                "value": 400,
+                "tool": "filter_by_range",
+                "is_exhaustive": true
+              },
+              {
+                "field": "rating.distribution.5_star",
+                "op": ">",
+                "value": 700,
+                "tool": "filter_by_range",
+                "is_exhaustive": true
+              }
+            ],
+            "unknown_count": 0,
+            "infeasible_count": 19,
+            "source_exhaustive": true
+          },
+          "catalog_rank": {
+            "c7f51f45": 0,
+            "1541eebb": 1,
+            "f6ef52d7": 2,
+            "b4ad4c47": 3,
+            "3132bce1": 4,
+            "eaac5bec": 5,
+            "7d5377fa": 6,
+            "661d4d55": 7,
+            "9b5e7bb3": 8,
+            "a27637d0": 9,
+            "c2596a10": 10,
+            "15e30dc0": 11,
+            "f33ab2fa": 12,
+            "396693f2": 13,
+            "56d103cf": 14,
+            "79910f1e": 15,
+            "2534f797": 16,
+            "bc22cb3f": 17,
+            "e263133e": 18,
+            "7a74ef4e": 19,
+            "13ef218a": 20,
+            "2207726d": 21,
+            "110e7a62": 22,
+            "54ae3f55": 23,
+            "78994bec": 24,
+            "ee320122": 25,
+            "75bfb915": 26,
+            "9b41a362": 27,
+            "b1e1b400": 28,
+            "beac4616": 29,
+            "3f698f1a": 30,
+            "36e68c29": 31,
+            "35c55cfa": 32,
+            "5ee25204": 33,
+            "7cab5f99": 34,
+            "ba76f8ff": 35,
+            "45214080": 36,
+            "4a8bc242": 37,
+            "cd2b1260": 38,
+            "73c8e0b0": 39,
+            "99d71be5": 40,
+            "e212e65a": 41,
+            "704de8f2": 42,
+            "47e357f5": 43,
+            "11cf0c2d": 44,
+            "c0ee59dd": 45,
+            "e51236bf": 46,
+            "a1334384": 47,
+            "f5f47171": 48,
+            "caf70469": 49,
+            "a09693a4": 50,
+            "870283ab": 51,
+            "e42d5e53": 52,
+            "fd256474": 53,
+            "a3acad45": 54,
+            "da21eac5": 55,
+            "094419bc": 56,
+            "60fc7af3": 57
+          }
+        },
+        "2": {
+          "constraints": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Men's XT-Quest All-Terrain Bottoms",
+              "source_text": "Men's XT-Quest All-Terrain Bottoms"
+            },
+            {
+              "field": "size",
+              "op": "==",
+              "value": "L",
+              "source_text": "size L"
+            },
+            {
+              "field": "rating.distribution.3_star",
+              "op": "==",
+              "value": 11,
+              "source_text": "exactly 11 three-star ratings"
+            }
+          ],
+          "candidate_ids": [
+            "a59cc66d"
+          ],
+          "unknown_candidate_ids": [],
+          "status": "optimality_certified",
+          "coverage": {
+            "feasible_candidate_found": true,
+            "candidate_set_complete": true,
+            "optimality_certified": true,
+            "infeasible_certified": false,
+            "total_count": 1,
+            "retrieved_count": 1,
+            "feasible_count": 1,
+            "feasible_target": 1,
+            "candidate_limit": 1,
+            "retrieval_budget_exhausted": false,
+            "pages_exhausted": true,
+            "sort_by": "price",
+            "order": "asc",
+            "all_cheaper_checked": true,
+            "best_product_id": "a59cc66d",
+            "applied_filters": [
+              {
+                "field": "name",
+                "op": "contains",
+                "value": "Men's XT-Quest All-Terrain Bottoms",
+                "tool": "filter_by_text",
+                "is_exhaustive": true
+              },
+              {
+                "field": "size",
+                "op": "==",
+                "value": "L",
+                "tool": "filter_by_size",
+                "is_exhaustive": true
+              },
+              {
+                "field": "rating.distribution.3_star",
+                "op": "==",
+                "value": 11,
+                "tool": "filter_by_range",
+                "is_exhaustive": true
+              }
+            ],
+            "unknown_count": 0,
+            "infeasible_count": 0,
+            "source_exhaustive": true
+          },
+          "catalog_rank": {
+            "a59cc66d": 0
+          }
+        },
+        "3": {
+          "constraints": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Trail Explorer",
+              "source_text": "name Trail Explorer"
+            },
+            {
+              "field": "suitable_season",
+              "op": "==",
+              "value": "all seasons",
+              "source_text": "all-seasons"
+            },
+            {
+              "field": "rating.total_reviews",
+              "op": ">",
+              "value": 400,
+              "source_text": "more than 400 total reviews"
+            }
+          ],
+          "candidate_ids": [
+            "1358df77"
+          ],
+          "unknown_candidate_ids": [],
+          "status": "optimality_certified",
+          "coverage": {
+            "feasible_candidate_found": true,
+            "candidate_set_complete": true,
+            "optimality_certified": true,
+            "infeasible_certified": false,
+            "total_count": 1,
+            "retrieved_count": 1,
+            "feasible_count": 1,
+            "feasible_target": 1,
+            "candidate_limit": 1,
+            "retrieval_budget_exhausted": false,
+            "pages_exhausted": true,
+            "sort_by": "price",
+            "order": "asc",
+            "all_cheaper_checked": true,
+            "best_product_id": "1358df77",
+            "applied_filters": [
+              {
+                "field": "name",
+                "op": "contains",
+                "value": "Trail Explorer",
+                "tool": "filter_by_text",
+                "is_exhaustive": true
+              },
+              {
+                "field": "suitable_season",
+                "op": "==",
+                "value": "all seasons",
+                "tool": "filter_by_text",
+                "is_exhaustive": true
+              },
+              {
+                "field": "rating.total_reviews",
+                "op": ">",
+                "value": 400,
+                "tool": "filter_by_range",
+                "is_exhaustive": true
+              }
+            ],
+            "unknown_count": 0,
+            "infeasible_count": 0,
+            "source_exhaustive": true
+          },
+          "catalog_rank": {
+            "1358df77": 0
+          }
+        },
+        "4": {
+          "constraints": [
+            {
+              "field": "name",
+              "op": "contains",
+              "value": "Men's UA HOVR™ Phantom Winter Running Shoes",
+              "source_text": "Men's UA HOVR™ Phantom Winter Running Shoes"
+            },
+            {
+              "field": "suitable_season",
+              "op": "==",
+              "value": "winter",
+              "source_text": "winter"
+            },
+            {
+              "field": "rating.total_reviews",
+              "op": ">",
+              "value": 250,
+              "source_text": "over 250 total reviews"
+            },
+            {
+              "field": "rating.distribution.1_star",
+              "op": "<",
+              "value": 2,
+              "source_text": "fewer than 2 one-star ratings"
+            },
+            {
+              "field": "rating.distribution.2_star",
+              "op": "<",
+              "value": 3,
+              "source_text": "fewer than 3 two-star ratings"
+            }
+          ],
+          "candidate_ids": [
+            "db50f2ed"
+          ],
+          "unknown_candidate_ids": [],
+          "status": "optimality_certified",
+          "coverage": {
+            "feasible_candidate_found": true,
+            "candidate_set_complete": true,
+            "optimality_certified": true,
+            "infeasible_certified": false,
+            "total_count": 1,
+            "retrieved_count": 1,
+            "feasible_count": 1,
+            "feasible_target": 1,
+            "candidate_limit": 1,
+            "retrieval_budget_exhausted": false,
+            "pages_exhausted": true,
+            "sort_by": "price",
+            "order": "asc",
+            "all_cheaper_checked": true,
+            "best_product_id": "db50f2ed",
+            "applied_filters": [
+              {
+                "field": "name",
+                "op": "contains",
+                "value": "Men's UA HOVR™ Phantom Winter Running Shoes",
+                "tool": "filter_by_text",
+                "is_exhaustive": true
+              },
+              {
+                "field": "suitable_season",
+                "op": "==",
+                "value": "winter",
+                "tool": "filter_by_text",
+                "is_exhaustive": true
+              },
+              {
+                "field": "rating.total_reviews",
+                "op": ">",
+                "value": 250,
+                "tool": "filter_by_range",
+                "is_exhaustive": true
+              },
+              {
+                "field": "rating.distribution.1_star",
+                "op": "<",
+                "value": 2,
+                "tool": "filter_by_range",
+                "is_exhaustive": true
+              },
+              {
+                "field": "rating.distribution.2_star",
+                "op": "<",
+                "value": 3,
+                "tool": "filter_by_range",
+                "is_exhaustive": true
+              }
+            ],
+            "unknown_count": 0,
+            "infeasible_count": 0,
+            "source_exhaustive": true
+          },
+          "catalog_rank": {
+            "db50f2ed": 0
+          }
+        }
+      },
+      "candidate_count": 61,
+      "transport_times": {},
+      "coupons": [
+        {
+          "coupon_name": "Cross-store: ¥120 off every ¥900",
+          "scope": "cross_store",
+          "brand": null,
+          "threshold": 900.0,
+          "discount": 120.0,
+          "owned_quantity": 1,
+          "vip_required": false,
+          "eligibility_model": "benchmark_cart_threshold"
+        }
+      ]
+    }
+  }
+}

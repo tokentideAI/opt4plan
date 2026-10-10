@@ -1,0 +1,831 @@
+{
+  "id": "id_47",
+  "query": "我打算2025年11月12号从南宁出发去南京玩几天，15号就回来了。交通的话，去程麻烦帮我订一个直飞航班里最便宜的票，毕竟预算有限，能省一点是一点。住的话，我想找一家带泳池的酒店，星级就选两星级吧，设施简单点没关系，但游泳池一定要有。\n\n哦对了，吃饭这块我有两个地方特别想去。一个是'南京1912街区'那边，我听说那里有不少好吃的，你帮我挑一家评分最高的餐厅安排进去吧。还有一个就是'南京眼步行桥'附近，我想尝尝西餐，最好是那种综合风味的，麻烦你找一家合适的给安排一下。\n\n基本就是这些啦，信息我都给全了，你直接帮我把行程规划出来吧！ 2025年11月12号是周三",
+  "model": "deepseek-flash",
+  "language": "zh",
+  "final_plan": "",
+  "success": false,
+  "problem_ir": {
+    "trip": {
+      "origin": "南宁",
+      "destination": "南京",
+      "start_date": "2025-11-12",
+      "end_date": "2025-11-15",
+      "travelers": 1,
+      "rooms": 1,
+      "budget_max": null,
+      "currency": "RMB"
+    },
+    "transport": {
+      "outbound": {
+        "allowed_modes": [
+          "flight"
+        ],
+        "constraints": [
+          {
+            "field": "direct",
+            "op": "==",
+            "value": true,
+            "source_text": "直飞航班"
+          }
+        ],
+        "soft_preferences": [],
+        "objective": {
+          "field": "price",
+          "sense": "min",
+          "source_text": "最便宜的票",
+          "soft": false
+        }
+      },
+      "return": {
+        "allowed_modes": [
+          "flight",
+          "train"
+        ],
+        "constraints": [],
+        "soft_preferences": [],
+        "objective": null
+      }
+    },
+    "hotel": {
+      "constraints": [
+        {
+          "field": "services",
+          "op": "contains",
+          "value": "泳池",
+          "source_text": "带泳池"
+        },
+        {
+          "field": "star",
+          "op": "==",
+          "value": 2.0,
+          "source_text": "两星级"
+        }
+      ],
+      "soft_preferences": [],
+      "objective": null
+    },
+    "attractions": {
+      "count": null,
+      "selection": "default",
+      "required_names": [],
+      "constraints": [],
+      "soft_preferences": [],
+      "objective": null,
+      "required_groups": []
+    },
+    "restaurants": {
+      "requirements": [
+        {
+          "required_name": null,
+          "nearby_location": "南京1912街区",
+          "constraints": [],
+          "soft_preferences": [],
+          "objective": {
+            "field": "rating",
+            "sense": "max",
+            "source_text": "评分最高",
+            "soft": false
+          }
+        },
+        {
+          "required_name": null,
+          "nearby_location": "南京眼步行桥",
+          "constraints": [
+            {
+              "field": "cuisine",
+              "op": "==",
+              "value": "西餐",
+              "source_text": "西餐"
+            }
+          ],
+          "soft_preferences": [
+            {
+              "field": "tags",
+              "op": "contains",
+              "value": "综合风味",
+              "source_text": "最好是那种综合风味的"
+            }
+          ],
+          "objective": null
+        }
+      ]
+    },
+    "global_constraints": [],
+    "explicit_preferences": []
+  },
+  "metrics": {
+    "llm_calls": 2,
+    "api_attempts": 2,
+    "input_tokens": 2110,
+    "output_tokens": 1639,
+    "total_tokens": 3749,
+    "tool_calls": 26,
+    "tool_calls_by_name": {
+      "query_train_info": 1,
+      "query_flight_info": 2,
+      "search_location": 3,
+      "recommend_restaurants": 7,
+      "query_hotel_info": 1,
+      "recommend_attractions": 1,
+      "query_attraction_details": 10,
+      "query_road_route_info": 1
+    },
+    "tool_errors": 0,
+    "duplicate_tool_calls_avoided": 0,
+    "solver_rounds": 3,
+    "master_assignments": 0,
+    "master_day_cuts": 0,
+    "constraint_propagations": 4,
+    "constraint_false": 0,
+    "constraint_unknown": 4,
+    "fastcheck_fact_requests": 0,
+    "frontier_states": 12,
+    "shared_fact_requests": 2,
+    "solver_runtime": 0.0,
+    "solver_backend": "gurobi",
+    "route_queries": 1,
+    "parser_success": true,
+    "parser_attempts": 1,
+    "parser_validation_errors": [],
+    "semantic_audit_calls": 1,
+    "semantic_audit_retries": 0,
+    "semantic_audit_repairs": 1,
+    "semantic_audit_rejected": 0,
+    "semantic_recovery_calls": 0,
+    "ir_repairs_applied": 0,
+    "recovery_rejected": 0,
+    "recall_expansions_proposed": 0,
+    "recall_expansions_accepted": 0,
+    "verification_success": false,
+    "fallback_used": false,
+    "elapsed_time": 6.073643922805786
+  },
+  "semantic_events": [
+    {
+      "stage": "semantic_audit",
+      "verdict": "REPAIR",
+      "issues": [
+        {
+          "kind": "missing",
+          "source_text": "15号就回来了",
+          "reason": "The return transport is part of the trip and should be represented; the parsed IR has no return constraint or objective. Since the user only asked to book the outbound flight and gave no return requirements, a placeholder return segment with no constraints/objective is acceptable, but the current IR already has it; no change needed there. However, the return date is captured by trip end_date."
+        },
+        {
+          "kind": "modality",
+          "source_text": "游泳池一定要有",
+          "reason": "The pool requirement is a hard must, which is correctly encoded as a constraint, but the IR weakens '一定要有' by not reflecting it distinctly from general service constraints. This is acceptable as a hard constraint, so no issue."
+        },
+        {
+          "kind": "missing",
+          "source_text": "吃饭这块我有两个地方特别想去",
+          "reason": "Two distinct restaurant location requirements are correctly represented as two separate requirements, so no issue."
+        },
+        {
+          "kind": "objective",
+          "source_text": "评分最高的餐厅",
+          "reason": "The highest rating objective for the 南京1912街区 restaurant is correctly encoded."
+        },
+        {
+          "kind": "missing",
+          "source_text": "综合风味",
+          "reason": "The user said '最好是那种综合风味的' which is a soft preference ('最好是'), not a hard constraint. The parsed IR encodes it as a hard constraint. Should be a soft_preference."
+        },
+        {
+          "kind": "modality",
+          "source_text": "最好是那种综合风味的",
+          "reason": "This is a soft preference, not a hard requirement. The parsed IR placed it under constraints instead of soft_preferences."
+        },
+        {
+          "kind": "modality",
+          "source_text": "最好是那种综合风味的",
+          "reason": "The word '最好是' indicates a preference, not a strict constraint."
+        }
+      ],
+      "attempt": 1,
+      "applied": true
+    }
+  ],
+  "verification": null,
+  "state_summary": {
+    "counts": {
+      "flight": 18,
+      "train": 7,
+      "hotel": 8,
+      "attraction": 10,
+      "restaurant": 52,
+      "route": 1,
+      "location": 3
+    },
+    "queried_keys": [
+      "attractions:南京:all",
+      "details:attraction:中国南京云锦博物馆",
+      "details:attraction:六朝博物馆",
+      "details:attraction:南京1912街区",
+      "details:attraction:南京眼步行桥",
+      "details:attraction:南京长江大桥",
+      "details:attraction:灵谷寺",
+      "details:attraction:科巷",
+      "details:attraction:秦淮河",
+      "details:attraction:钟山风景名胜区中山陵景区音乐台",
+      "details:attraction:雨花台烈士陵园",
+      "hotels:南京:2025-11-12:2025-11-15:2.0:None",
+      "location:南京1912街区",
+      "location:南京眼步行桥",
+      "location:禄口国际机场",
+      "outbound:flight:南宁:南京:2025-11-12",
+      "restaurants:generic:31.998425,118.780177",
+      "restaurants:generic:32.020660,118.788899",
+      "restaurants:generic:32.036390,118.744814",
+      "restaurants:generic:32.055096,118.855382",
+      "restaurants:generic:32.055418,118.867942",
+      "restaurants:南京1912街区:32.044777,118.795778",
+      "restaurants:南京眼步行桥:31.995131,118.703146",
+      "return:flight:南京:南宁:2025-11-15",
+      "return:train:南京:南宁:2025-11-15",
+      "route:禄口国际机场->汉庭南京葛塘地铁站酒店"
+    ],
+    "failed_requests": {},
+    "sample_records": {
+      "flight": [
+        {
+          "name": "MU2779",
+          "price": 518.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "南京",
+          "destination": "南宁",
+          "departure_station": "禄口国际机场",
+          "arrival_station": "吴圩机场",
+          "departure_time": 470,
+          "arrival_time": 745,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 275,
+          "direct": true,
+          "seat_class": "经济舱",
+          "train_type": "东航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "NNG",
+              "arrStationName": "吴圩机场",
+              "depCityName": "南京",
+              "depStationCode": "NKG",
+              "depStationName": "禄口国际机场",
+              "duration": 275,
+              "arrDateTime": "2025-11-15 12:25:00",
+              "depDateTime": "2025-11-15 07:50:00",
+              "marketingTransportName": "东航",
+              "marketingTransportNo": "MU2779",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "319",
+              "manufacturer": "空客"
+            }
+          ]
+        },
+        {
+          "name": "ZH9378",
+          "price": 620.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "南京",
+          "destination": "南宁",
+          "departure_station": "禄口国际机场",
+          "arrival_station": "吴圩机场",
+          "departure_time": 485,
+          "arrival_time": 660,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 175,
+          "direct": true,
+          "seat_class": "经济舱",
+          "train_type": "深航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "NNG",
+              "arrStationName": "吴圩机场",
+              "depCityName": "南京",
+              "depStationCode": "NKG",
+              "depStationName": "禄口国际机场",
+              "duration": 175,
+              "arrDateTime": "2025-11-15 11:00:00",
+              "depDateTime": "2025-11-15 08:05:00",
+              "marketingTransportName": "深航",
+              "marketingTransportNo": "ZH9378",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            }
+          ]
+        },
+        {
+          "name": "ZH9374",
+          "price": 720.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "南京",
+          "destination": "南宁",
+          "departure_station": "禄口国际机场",
+          "arrival_station": "吴圩机场",
+          "departure_time": 700,
+          "arrival_time": 875,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 175,
+          "direct": true,
+          "seat_class": "经济舱",
+          "train_type": "深航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "NNG",
+              "arrStationName": "吴圩机场",
+              "depCityName": "南京",
+              "depStationCode": "NKG",
+              "depStationName": "禄口国际机场",
+              "duration": 175,
+              "arrDateTime": "2025-11-15 14:35:00",
+              "depDateTime": "2025-11-15 11:40:00",
+              "marketingTransportName": "深航",
+              "marketingTransportNo": "ZH9374",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            }
+          ]
+        }
+      ],
+      "train": [
+        {
+          "name": "G1541+G423",
+          "price": 686.5,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "南京",
+          "destination": "南宁",
+          "departure_station": "南京南站",
+          "arrival_station": "南宁东站",
+          "departure_time": 548,
+          "arrival_time": 1170,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 587,
+          "direct": false,
+          "seat_class": "二等座",
+          "train_type": "高铁",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "WHN",
+              "arrStationName": "武汉站",
+              "depCityName": "南京",
+              "depStationCode": "NKH",
+              "depStationName": "南京南站",
+              "duration": 161,
+              "arrDateTime": "2025-11-15 11:49:00",
+              "depDateTime": "2025-11-15 09:08:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G1541",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            },
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "NFZ",
+              "arrStationName": "南宁东站",
+              "depCityName": "武汉",
+              "depStationCode": "WHN",
+              "depStationName": "武汉站",
+              "duration": 426,
+              "arrDateTime": "2025-11-15 19:30:00",
+              "depDateTime": "2025-11-15 12:24:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G423",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "G1427+G2339",
+          "price": 687.5,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "南京",
+          "destination": "南宁",
+          "departure_station": "南京南站",
+          "arrival_station": "南宁东站",
+          "departure_time": 750,
+          "arrival_time": 1357,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 588,
+          "direct": false,
+          "seat_class": "二等座",
+          "train_type": "高铁",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "CWQ",
+              "arrStationName": "长沙南站",
+              "depCityName": "南京",
+              "depStationCode": "NKH",
+              "depStationName": "南京南站",
+              "duration": 254,
+              "arrDateTime": "2025-11-15 16:44:00",
+              "depDateTime": "2025-11-15 12:30:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G1427",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            },
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "NFZ",
+              "arrStationName": "南宁东站",
+              "depCityName": "长沙南",
+              "depStationCode": "CWQ",
+              "depStationName": "长沙南站",
+              "duration": 334,
+              "arrDateTime": "2025-11-15 22:37:00",
+              "depDateTime": "2025-11-15 17:03:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G2339",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "G1549+G93",
+          "price": 729.5,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "南京",
+          "destination": "南宁",
+          "departure_station": "南京南站",
+          "arrival_station": "南宁东站",
+          "departure_time": 573,
+          "arrival_time": 1155,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 559,
+          "direct": false,
+          "seat_class": "二等座",
+          "train_type": "高铁",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "CWQ",
+              "arrStationName": "长沙南站",
+              "depCityName": "南京",
+              "depStationCode": "NKH",
+              "depStationName": "南京南站",
+              "duration": 267,
+              "arrDateTime": "2025-11-15 14:00:00",
+              "depDateTime": "2025-11-15 09:33:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G1549",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            },
+            {
+              "arrCityName": "南宁",
+              "arrStationCode": "NFZ",
+              "arrStationName": "南宁东站",
+              "depCityName": "长沙南",
+              "depStationCode": "CWQ",
+              "depStationName": "长沙南站",
+              "duration": 292,
+              "arrDateTime": "2025-11-15 19:15:00",
+              "depDateTime": "2025-11-15 14:23:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G93",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        }
+      ],
+      "hotel": [
+        {
+          "name": "如家·neo-南京新街口中心店",
+          "price": 299.0,
+          "rating": 4.7,
+          "city": null,
+          "address": "秦淮区淮海路36号",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 32.037604,
+          "lon": 118.78566,
+          "star": 2.0,
+          "services": [
+            "SPA服务",
+            "健身房",
+            "机器人送餐服务"
+          ],
+          "brand": "如家",
+          "decoration_year": 2020.0
+        },
+        {
+          "name": "汉庭南京夫子庙步行街酒店",
+          "price": 252.0,
+          "rating": 4.8,
+          "city": null,
+          "address": "秦淮区大石坝街146号",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 32.018343,
+          "lon": 118.78835,
+          "star": 2.0,
+          "services": [
+            "SPA服务",
+            "免费停车"
+          ],
+          "brand": "汉庭",
+          "decoration_year": 2020.0
+        },
+        {
+          "name": "汉庭南京新街口张府园地铁站酒店",
+          "price": 288.0,
+          "rating": 4.7,
+          "city": null,
+          "address": "秦淮区建邺路76号（张府园地铁口地铁1号线张府园地铁站3号口右转150米）",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 32.0304,
+          "lon": 118.782,
+          "star": 2.0,
+          "services": [
+            "健身房",
+            "免费停车",
+            "洗衣机和烘干机",
+            "电视可投屏"
+          ],
+          "brand": "汉庭",
+          "decoration_year": 2025.0
+        }
+      ],
+      "attraction": [
+        {
+          "name": "六朝博物馆",
+          "price": 13.0,
+          "rating": 4.7,
+          "city": "南京",
+          "address": "nan",
+          "opening_time": 540,
+          "closing_time": 1020,
+          "lat": 32.04284,
+          "lon": 118.799124,
+          "min_duration": 30,
+          "max_duration": 120,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "周一"
+        },
+        {
+          "name": "南京1912街区",
+          "price": 0.0,
+          "rating": 4.7,
+          "city": "南京",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 32.044777,
+          "lon": 118.795778,
+          "min_duration": 90,
+          "max_duration": 180,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "休闲体验",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "南京长江大桥",
+          "price": 0.0,
+          "rating": 4.7,
+          "city": "南京",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 32.11604,
+          "lon": 118.738514,
+          "min_duration": 30,
+          "max_duration": 120,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "城市地标",
+          "closing_dates": "nan"
+        }
+      ],
+      "restaurant": [
+        {
+          "name": "后味道·中餐厅",
+          "price": 258.0,
+          "rating": 3.9,
+          "city": null,
+          "address": null,
+          "opening_time": 1050,
+          "closing_time": 1230,
+          "lat": 31.990868,
+          "lon": 118.708386,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [],
+          "nearby_location": "南京眼步行桥",
+          "attraction_type": null
+        },
+        {
+          "name": "璞膳·禅意餐厅(仁恒江湾新天地店)",
+          "price": 400.0,
+          "rating": 4.2,
+          "city": null,
+          "address": null,
+          "opening_time": 960,
+          "closing_time": 1260,
+          "lat": 31.992314,
+          "lon": 118.709804,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [],
+          "nearby_location": "南京眼步行桥",
+          "attraction_type": null
+        },
+        {
+          "name": "国际青年会议酒店·莱客德国啤酒餐厅",
+          "price": 157.0,
+          "rating": 4.0,
+          "city": null,
+          "address": null,
+          "opening_time": 1050,
+          "closing_time": 30,
+          "lat": 31.991023,
+          "lon": 118.708803,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;外国餐厅;西餐厅(综合风味)",
+          "tags": [],
+          "nearby_location": "南京眼步行桥",
+          "attraction_type": null
+        }
+      ],
+      "route": [
+        {
+          "name": "禄口国际机场 -> 汉庭南京葛塘地铁站酒店",
+          "price": 321.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "禄口国际机场",
+          "destination": "汉庭南京葛塘地铁站酒店",
+          "distance": 81230,
+          "duration": 122,
+          "mode": "taxi"
+        }
+      ],
+      "location": [
+        {
+          "name": "南京眼步行桥",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 31.995131,
+          "lon": 118.703146
+        },
+        {
+          "name": "南京1912街区",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 32.044777,
+          "lon": 118.795778
+        },
+        {
+          "name": "禄口国际机场",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 31.731634,
+          "lon": 118.871181
+        }
+      ]
+    }
+  },
+  "solution": null,
+  "constraint_summary": {
+    "truth": "SAT",
+    "satisfied": 11,
+    "unresolved": 1,
+    "conflicts": [],
+    "missing_fact_keys": []
+  },
+  "failure": {
+    "reason": "structured_solver_failed",
+    "last_status": "INFEASIBLE",
+    "last_reason": "macro/global planner exhausted candidates",
+    "conflict": {
+      "kind": "template_incomplete",
+      "macro": [
+        "flight:HO1729:091cc90060f25e0f",
+        "hotel:query_hotel_info:6:d0e98db40f56",
+        "flight:ZH9378:0927e6a5695f97bb"
+      ],
+      "details": {
+        "reason": "restaurant_requirements_unassigned",
+        "option_counts": [
+          1,
+          1
+        ],
+        "meal_slots": [
+          {
+            "slot": "d1:lunch",
+            "earliest": 660,
+            "latest": 960
+          },
+          {
+            "slot": "d1:dinner",
+            "earliest": 1020,
+            "latest": 1260
+          },
+          {
+            "slot": "d2:lunch",
+            "earliest": 660,
+            "latest": 840
+          },
+          {
+            "slot": "d2:dinner",
+            "earliest": 1020,
+            "latest": 1260
+          },
+          {
+            "slot": "d3:lunch",
+            "earliest": 660,
+            "latest": 840
+          },
+          {
+            "slot": "d3:dinner",
+            "earliest": 1020,
+            "latest": 1260
+          }
+        ]
+      }
+    }
+  }
+}

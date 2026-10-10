@@ -1,0 +1,637 @@
+{
+  "id": "id_13",
+  "query": "我打算2025年11月12号从贵阳去桂林玩两天，2025年11月13号就回来。麻烦帮我规划一下行程哦，包括交通、酒店、吃饭和景点这些安排,对了，我为这次旅行计划的预算是2600元，请考虑到计划中。\n\n首先，我想去程选最早出发的直达列车，这样可以早点到桂林，时间比较充裕。然后酒店的话，我想住个舒服一点的，最好是四星级的，而且必须要有SPA服务，我打算旅行的时候放松一下。对了，吃饭的话有个地方是必去的，我听说'亚洲音乐餐厅'挺特别的，麻烦你帮我安排一顿饭在那儿。还有啊，我想在'印象刘三姐'附近找一家评价最高的餐厅吃一顿，听说那边也有不少好吃的，帮我看看哪家最值得去吧。\n\n我的要求基本就这些啦，信息应该都给全了，你直接开始帮我规划行程吧，预算什么的就按这些条件来，不用再问其他细节了，辛苦啦！ 2025年11月12号是周三",
+  "model": "deepseek-flash",
+  "language": "zh",
+  "final_plan": "",
+  "success": false,
+  "problem_ir": {
+    "trip": {
+      "origin": "贵阳",
+      "destination": "桂林",
+      "start_date": "2025-11-12",
+      "end_date": "2025-11-13",
+      "travelers": 1,
+      "rooms": 1,
+      "budget_max": 2600.0,
+      "currency": "RMB"
+    },
+    "transport": {
+      "outbound": {
+        "allowed_modes": [
+          "train"
+        ],
+        "constraints": [
+          {
+            "field": "direct",
+            "op": "==",
+            "value": true,
+            "source_text": "直达列车"
+          }
+        ],
+        "soft_preferences": [],
+        "objective": {
+          "field": "departure_time",
+          "sense": "min",
+          "source_text": "最早出发",
+          "soft": false
+        }
+      },
+      "return": {
+        "allowed_modes": [
+          "flight",
+          "train"
+        ],
+        "constraints": [],
+        "soft_preferences": [],
+        "objective": null
+      }
+    },
+    "hotel": {
+      "constraints": [
+        {
+          "field": "services",
+          "op": "contains",
+          "value": "SPA",
+          "source_text": "必须要有SPA服务"
+        }
+      ],
+      "soft_preferences": [
+        {
+          "field": "star",
+          "op": "==",
+          "value": 4.0,
+          "source_text": "最好是四星级的"
+        }
+      ],
+      "objective": null
+    },
+    "attractions": {
+      "count": null,
+      "selection": "default",
+      "required_names": [],
+      "constraints": [],
+      "soft_preferences": [],
+      "objective": null,
+      "required_groups": []
+    },
+    "restaurants": {
+      "requirements": [
+        {
+          "required_name": "亚洲音乐餐厅",
+          "nearby_location": null,
+          "constraints": [],
+          "soft_preferences": [],
+          "objective": null
+        },
+        {
+          "required_name": null,
+          "nearby_location": "印象刘三姐",
+          "constraints": [],
+          "soft_preferences": [],
+          "objective": null
+        }
+      ]
+    },
+    "global_constraints": [],
+    "explicit_preferences": []
+  },
+  "metrics": {
+    "llm_calls": 3,
+    "api_attempts": 3,
+    "input_tokens": 3906,
+    "output_tokens": 1793,
+    "total_tokens": 5699,
+    "tool_calls": 58,
+    "tool_calls_by_name": {
+      "query_train_info": 2,
+      "query_restaurant_details": 1,
+      "query_flight_info": 1,
+      "search_location": 3,
+      "recommend_restaurants": 6,
+      "query_hotel_info": 1,
+      "recommend_attractions": 1,
+      "query_attraction_details": 8,
+      "query_road_route_info": 35
+    },
+    "tool_errors": 0,
+    "duplicate_tool_calls_avoided": 0,
+    "solver_rounds": 6,
+    "master_assignments": 28,
+    "master_day_cuts": 4,
+    "constraint_propagations": 7,
+    "constraint_false": 0,
+    "constraint_unknown": 14,
+    "fastcheck_fact_requests": 0,
+    "frontier_states": 36,
+    "shared_fact_requests": 37,
+    "solver_runtime": 0.22418999671936035,
+    "solver_backend": "gurobi",
+    "route_queries": 35,
+    "parser_success": true,
+    "parser_attempts": 2,
+    "parser_validation_errors": [
+      "unsupported hotel constraint field: 'comfort'"
+    ],
+    "semantic_audit_calls": 1,
+    "semantic_audit_retries": 0,
+    "semantic_audit_repairs": 1,
+    "semantic_audit_rejected": 0,
+    "semantic_recovery_calls": 0,
+    "ir_repairs_applied": 0,
+    "recovery_rejected": 0,
+    "recall_expansions_proposed": 0,
+    "recall_expansions_accepted": 0,
+    "verification_success": false,
+    "fallback_used": false,
+    "elapsed_time": 6.496017694473267
+  },
+  "semantic_events": [
+    {
+      "stage": "semantic_audit",
+      "verdict": "REPAIR",
+      "issues": [
+        {
+          "kind": "modality",
+          "source_text": "最好",
+          "reason": "Hotel four-star request is expressed with '最好' (preferably), so it should be a soft preference, not a hard constraint."
+        },
+        {
+          "kind": "objective",
+          "source_text": "评价最高的餐厅",
+          "reason": "The second restaurant requirement asks for the highest-rated restaurant near 印象刘三姐, so an objective with sense 'max' on rating is missing."
+        },
+        {
+          "kind": "missing",
+          "source_text": "交通、酒店、吃饭和景点这些安排",
+          "reason": "The user explicitly asks for attractions arrangements, but the parsed IR has no attraction requirement or coverage for sightseeing."
+        }
+      ],
+      "attempt": 1,
+      "applied": true
+    }
+  ],
+  "verification": null,
+  "state_summary": {
+    "counts": {
+      "flight": 0,
+      "train": 20,
+      "hotel": 14,
+      "attraction": 10,
+      "restaurant": 36,
+      "route": 35,
+      "location": 3
+    },
+    "queried_keys": [
+      "attractions:桂林:all",
+      "details:attraction:东西巷",
+      "details:attraction:兴坪古镇",
+      "details:attraction:十里画廊",
+      "details:attraction:印象刘三姐",
+      "details:attraction:木龙湖",
+      "details:attraction:漓江竹筏漂流（杨堤-兴坪段）",
+      "details:attraction:独秀峰",
+      "details:attraction:遇龙河竹筏漂流",
+      "details:restaurant:亚洲音乐餐厅",
+      "hotels:桂林:2025-11-12:2025-11-13:None:None",
+      "location:印象刘三姐",
+      "location:桂林北站",
+      "location:桂林西站",
+      "outbound:train:贵阳:桂林:2025-11-12",
+      "restaurants:generic:24.749369,110.476517",
+      "restaurants:generic:24.809946,110.399652",
+      "restaurants:generic:24.922688,110.520203",
+      "restaurants:generic:25.278717,110.299731",
+      "restaurants:generic:25.281648,110.299118",
+      "restaurants:印象刘三姐:24.776000,110.496000",
+      "return:flight:桂林:贵阳:2025-11-13",
+      "return:train:桂林:贵阳:2025-11-13",
+      "route:东西巷->哆哆骆融合餐厅",
+      "route:东西巷->小辣椒餐馆(漓滨路店)",
+      "route:东西巷->曼谷街头泰餐厅(云舞·lisa’s酒店店)",
+      "route:东西巷->酒拾烤肉(东西巷店)",
+      "route:东西巷->香港澜记(东西巷店)",
+      "route:亚洲音乐餐厅->桂林两江四湖象鼻山亚朵酒店",
+      "route:兴坪古镇->亚洲音乐餐厅",
+      "route:十里画廊->亚洲音乐餐厅",
+      "route:印象刘三姐->亚洲音乐餐厅",
+      "route:哆哆骆融合餐厅->兴坪古镇",
+      "route:哆哆骆融合餐厅->十里画廊",
+      "route:哆哆骆融合餐厅->印象刘三姐",
+      "route:哆哆骆融合餐厅->遇龙河竹筏漂流",
+      "route:小辣椒餐馆(漓滨路店)->桂林北站",
+      "route:曼谷街头泰餐厅(云舞·lisa’s酒店店)->兴坪古镇",
+      "route:曼谷街头泰餐厅(云舞·lisa’s酒店店)->十里画廊",
+      "route:曼谷街头泰餐厅(云舞·lisa’s酒店店)->印象刘三姐",
+      "route:曼谷街头泰餐厅(云舞·lisa’s酒店店)->遇龙河竹筏漂流",
+      "route:木龙湖->哆哆骆融合餐厅",
+      "route:木龙湖->小辣椒餐馆(漓滨路店)",
+      "route:木龙湖->酒拾烤肉(东西巷店)",
+      "route:木龙湖->香港澜记(东西巷店)",
+      "route:桂林两江四湖象鼻山亚朵酒店->东西巷",
+      "route:桂林两江四湖象鼻山亚朵酒店->木龙湖",
+      "route:桂林两江四湖象鼻山亚朵酒店->独秀峰",
+      "route:桂林西站->如家旗下-桂林阳朔西街漓江睿柏·云酒店",
+      "route:桂林西站->桂林两江四湖象鼻山亚朵酒店",
+      "route:桂林西站->麗枫酒店(桂林火车站两江四湖店)",
+      "route:独秀峰->哆哆骆融合餐厅",
+      "route:独秀峰->小辣椒餐馆(漓滨路店)",
+      "route:独秀峰->曼谷街头泰餐厅(云舞·lisa’s酒店店)",
+      "route:独秀峰->香港澜记(东西巷店)",
+      "route:遇龙河竹筏漂流->亚洲音乐餐厅",
+      "route:酒拾烤肉(东西巷店)->桂林北站",
+      "route:香港澜记(东西巷店)->桂林北站"
+    ],
+    "failed_requests": {},
+    "sample_records": {
+      "train": [
+        {
+          "name": "D1794",
+          "price": 655.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "桂林",
+          "destination": "贵阳",
+          "departure_station": "桂林北站",
+          "arrival_station": "龙洞堡站",
+          "departure_time": 968,
+          "arrival_time": 1122,
+          "departure_date": "2025-11-13",
+          "arrival_date": "2025-11-13",
+          "duration": 154,
+          "direct": true,
+          "seat_class": "一等座",
+          "train_type": "动车",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "贵阳",
+              "arrStationCode": "FVW",
+              "arrStationName": "龙洞堡站",
+              "depCityName": "桂林",
+              "depStationCode": "GBZ",
+              "depStationName": "桂林北站",
+              "duration": 154,
+              "arrDateTime": "2025-11-13 18:42:00",
+              "depDateTime": "2025-11-13 16:08:00",
+              "marketingTransportName": "动车",
+              "marketingTransportNo": "D1794",
+              "seatClassName": "一等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "D1826",
+          "price": 153.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "桂林",
+          "destination": "贵阳",
+          "departure_station": "桂林西站",
+          "arrival_station": "贵阳东站",
+          "departure_time": 821,
+          "arrival_time": 972,
+          "departure_date": "2025-11-13",
+          "arrival_date": "2025-11-13",
+          "duration": 151,
+          "direct": true,
+          "seat_class": "二等座",
+          "train_type": "动车",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "贵阳",
+              "arrStationCode": "KEW",
+              "arrStationName": "贵阳东站",
+              "depCityName": "桂林",
+              "depStationCode": "GEZ",
+              "depStationName": "桂林西站",
+              "duration": 151,
+              "arrDateTime": "2025-11-13 16:12:00",
+              "depDateTime": "2025-11-13 13:41:00",
+              "marketingTransportName": "动车",
+              "marketingTransportNo": "D1826",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "G3728",
+          "price": 172.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "桂林",
+          "destination": "贵阳",
+          "departure_station": "桂林西站",
+          "arrival_station": "贵阳东站",
+          "departure_time": 928,
+          "arrival_time": 1033,
+          "departure_date": "2025-11-13",
+          "arrival_date": "2025-11-13",
+          "duration": 105,
+          "direct": true,
+          "seat_class": "二等座",
+          "train_type": "高铁",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "贵阳",
+              "arrStationCode": "KEW",
+              "arrStationName": "贵阳东站",
+              "depCityName": "桂林",
+              "depStationCode": "GEZ",
+              "depStationName": "桂林西站",
+              "duration": 105,
+              "arrDateTime": "2025-11-13 17:13:00",
+              "depDateTime": "2025-11-13 15:28:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G3728",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        }
+      ],
+      "hotel": [
+        {
+          "name": "麗枫酒店·桂林市中心广场象鼻山景区店",
+          "price": 295.0,
+          "rating": 4.8,
+          "city": null,
+          "address": "正阳路步行街2号5层1号",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 25.27298,
+          "lon": 110.298082,
+          "star": 3.0,
+          "services": [
+            "SPA服务",
+            "泳池",
+            "洗衣机和烘干机",
+            "电视可投屏"
+          ],
+          "brand": "",
+          "decoration_year": 2019.0
+        },
+        {
+          "name": "全季桂林两江四湖景区酒店",
+          "price": 339.0,
+          "rating": 4.9,
+          "city": null,
+          "address": "广西省桂林市叠彩区中山中路71号",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 25.2841,
+          "lon": 110.297,
+          "star": 3.0,
+          "services": [
+            "SPA服务",
+            "免费停车"
+          ],
+          "brand": "全季",
+          "decoration_year": 2020.0
+        },
+        {
+          "name": "维也纳酒店(桂林全州高铁汽车站店)",
+          "price": 122.0,
+          "rating": 4.7,
+          "city": null,
+          "address": "半边街全大公路与桂黄路交汇处",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 25.940129,
+          "lon": 111.045379,
+          "star": 4.0,
+          "services": [
+            "机器人送餐服务",
+            "洗衣机和烘干机"
+          ],
+          "brand": "",
+          "decoration_year": 2018.0
+        }
+      ],
+      "attraction": [
+        {
+          "name": "兴坪古镇",
+          "price": 0.0,
+          "rating": 4.5,
+          "city": "桂林",
+          "address": "nan",
+          "opening_time": 540,
+          "closing_time": 990,
+          "lat": 24.916611,
+          "lon": 110.530606,
+          "min_duration": 90,
+          "max_duration": 180,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "独秀峰",
+          "price": 100.0,
+          "rating": 4.9,
+          "city": "桂林",
+          "address": "nan",
+          "opening_time": 480,
+          "closing_time": 1080,
+          "lat": 25.281648,
+          "lon": 110.299118,
+          "min_duration": 30,
+          "max_duration": 120,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "漓江竹筏漂流（杨堤-兴坪段）",
+          "price": 225.0,
+          "rating": 4.6,
+          "city": "桂林",
+          "address": "nan",
+          "opening_time": 480,
+          "closing_time": 1020,
+          "lat": 24.922688,
+          "lon": 110.520203,
+          "min_duration": 120,
+          "max_duration": 210,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "自然风光",
+          "closing_dates": "nan"
+        }
+      ],
+      "restaurant": [
+        {
+          "name": "亚洲音乐餐厅",
+          "price": 83.0,
+          "rating": 4.8,
+          "city": null,
+          "address": null,
+          "opening_time": 600,
+          "closing_time": 1410,
+          "lat": 24.775439,
+          "lon": 110.494172,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [],
+          "nearby_location": "印象刘三姐",
+          "attraction_type": null
+        },
+        {
+          "name": "喜鹊音乐餐厅",
+          "price": 66.0,
+          "rating": 4.5,
+          "city": null,
+          "address": null,
+          "opening_time": 690,
+          "closing_time": 1440,
+          "lat": 24.775933,
+          "lon": 110.495108,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "体育休闲服务;娱乐场所;酒吧|餐饮服务;中餐厅;中餐厅",
+          "tags": [],
+          "nearby_location": "印象刘三姐",
+          "attraction_type": null
+        },
+        {
+          "name": "恒河·印象印度餐厅",
+          "price": 63.0,
+          "rating": 4.5,
+          "city": null,
+          "address": null,
+          "opening_time": 720,
+          "closing_time": 1320,
+          "lat": 24.776363,
+          "lon": 110.49439,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;外国餐厅;印度风味|餐饮服务;外国餐厅;其它亚洲菜",
+          "tags": [],
+          "nearby_location": "印象刘三姐",
+          "attraction_type": null
+        }
+      ],
+      "route": [
+        {
+          "name": "桂林西站 -> 麗枫酒店(桂林火车站两江四湖店)",
+          "price": 55.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "桂林西站",
+          "destination": "麗枫酒店(桂林火车站两江四湖店)",
+          "distance": 14750,
+          "duration": 22,
+          "mode": "taxi"
+        },
+        {
+          "name": "桂林西站 -> 桂林两江四湖象鼻山亚朵酒店",
+          "price": 49.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "桂林西站",
+          "destination": "桂林两江四湖象鼻山亚朵酒店",
+          "distance": 13290,
+          "duration": 20,
+          "mode": "taxi"
+        },
+        {
+          "name": "桂林西站 -> 如家旗下-桂林阳朔西街漓江睿柏·云酒店",
+          "price": 374.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "桂林西站",
+          "destination": "如家旗下-桂林阳朔西街漓江睿柏·云酒店",
+          "distance": 94660,
+          "duration": 142,
+          "mode": "taxi"
+        }
+      ],
+      "location": [
+        {
+          "name": "印象刘三姐",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 24.776,
+          "lon": 110.496
+        },
+        {
+          "name": "桂林西站",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 25.354791,
+          "lon": 110.267016
+        },
+        {
+          "name": "桂林北站",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 25.329019,
+          "lon": 110.301731
+        }
+      ]
+    }
+  },
+  "solution": null,
+  "constraint_summary": {
+    "truth": "SAT",
+    "satisfied": 11,
+    "unresolved": 2,
+    "conflicts": [],
+    "missing_fact_keys": []
+  },
+  "failure": {
+    "reason": "structured_solver_failed",
+    "last_status": "NEEDS_INFO",
+    "last_reason": "frontier selected-route facts required",
+    "conflict": {}
+  }
+}

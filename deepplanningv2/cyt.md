@@ -1,0 +1,84 @@
+## Travel planning
+BENCHMARK_DATA_DIR="$PWD/data" \
+  python travelplanning/run.py \
+    --model deepseek-flash \
+    --language zh \
+    --workers 10 \
+    --max-llm-calls 80 \
+    --start-from inference \
+    --rerun-ids 0-9 \
+    --output-dir "$PWD/travelplanning/results/react_10_cases" \
+    --verbose
+
+BENCHMARK_DATA_DIR="$PWD/data" \
+python -u travelplanning/run.py \
+  --model deepseek-flash \
+  --language zh \
+  --workers 10 \
+  --max-llm-calls 80 \
+  --start-from inference \
+  --output-dir "$PWD/travelplanning/results/react_full" \
+  --verbose
+
+
+
+python -u travelplanning/GurobiAgent/solver_informed_travel_agent.py \
+    --model deepseek-flash \
+    --language zh \
+    --workers 2 \
+    --max-llm-calls 30 \
+    --max-tool-calls 400 \
+    --max-solver-rounds 64 \
+    --max-reflections 2 \
+    --ids 0 1 2 3 4 5 6 7 8 9 \
+    --evaluate \
+    --output-dir travelplanning/results/solver_reflection_10_zh
+
+
+BENCHMARK_DATA_DIR="$PWD/data" \
+  python -u travelplanning/GurobiAgent/solver_informed_travel_agent.py \
+    --model deepseek-flash \
+    --language zh \
+    --workers 2 \
+    --max-llm-calls 30 \
+    --max-tool-calls 400 \
+    --max-solver-rounds 6 \
+    --no-react-fallback \
+    --evaluate \
+    --output-dir travelplanning/results/solver_informed_all_zh
+
+## Shopping planning
+
+
+```shell
+SHOPPING_GUROBI_CROSSCHECK=1 \
+  SHOPPING_AGENT_BACKEND=gurobi \
+  BENCHMARK_MODEL=deepseek-flash \
+  SHOPPING_LEVELS="3" \
+  SHOPPING_SAMPLE_COUNT=20 \
+  SHOPPING_WORKERS=2 \
+  bash test_run.sh
+```
+
+```shell
+HOPPING_AGENT_BACKEND=gurobi \
+  BENCHMARK_MODEL=deepseek-flash \
+  SHOPPING_LEVELS="3" \
+  SHOPPING_SAMPLE_COUNT=20 \
+  SHOPPING_WORKERS=2 \
+  SHOPPING_MAX_LLM_CALLS=50 \
+  SHOPPING_MAX_CANDIDATES_PER_SLOT=300 \
+  SHOPPING_MAX_PRODUCT_DETAILS=2000 \
+  SHOPPING_MAX_RETRIEVAL_TOOL_CALLS=400 \
+  bash test_run.sh
+```
+
+BENCHMARK_MODEL=deepseek-flash \
+  SHOPPING_LEVELS="1 2" \
+  SHOPPING_SAMPLE_COUNT=50 \
+  SHOPPING_WORKERS=2 \
+  SHOPPING_MAX_LLM_CALLS=100 \
+  bash test_react_run.sh
+
+
+

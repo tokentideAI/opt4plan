@@ -1,0 +1,873 @@
+{
+  "id": "id_67",
+  "query": "我打算2025年11月12号从哈尔滨去大连玩，呆到2025年11月16号再回来，麻烦你帮我安排一下交通、住宿、吃饭和游玩的行程哈！我希望回程的时候能尽量晚点回来，这样可以多玩一会儿，所以回程的车次帮我选一个到得最晚的直达车。\n\n住的地方我希望价格能控制在每晚340到370块之间，太贵的就算了，普通干净舒适就行。然后在行程里有一顿饭我想安排在‘大连自然博物馆’附近的餐厅，最好是那种可以线上取号排队的，这样就不用浪费太多时间等了。\n\n至于景点，我特别想看自然风光类的景点，听说大连这方面很棒，你帮我挑一个评分最高的安排进去吧。差不多就这些了，信息应该都给全了，麻烦你直接帮我把行程规划好啦~ 2025年11月12号是周三",
+  "model": "deepseek-flash",
+  "language": "zh",
+  "final_plan": "",
+  "success": false,
+  "problem_ir": {
+    "trip": {
+      "origin": "哈尔滨",
+      "destination": "大连",
+      "start_date": "2025-11-12",
+      "end_date": "2025-11-16",
+      "travelers": 1,
+      "rooms": 1,
+      "budget_max": null,
+      "currency": "RMB"
+    },
+    "transport": {
+      "outbound": {
+        "allowed_modes": [
+          "flight",
+          "train"
+        ],
+        "constraints": [],
+        "soft_preferences": [],
+        "objective": null
+      },
+      "return": {
+        "allowed_modes": [
+          "flight",
+          "train"
+        ],
+        "constraints": [
+          {
+            "field": "direct",
+            "op": "==",
+            "value": true,
+            "source_text": "直达车"
+          }
+        ],
+        "soft_preferences": [],
+        "objective": null
+      }
+    },
+    "hotel": {
+      "constraints": [
+        {
+          "field": "price",
+          "op": ">=",
+          "value": 340.0,
+          "source_text": "每晚340到370块之间"
+        },
+        {
+          "field": "price",
+          "op": "<=",
+          "value": 370.0,
+          "source_text": "每晚340到370块之间"
+        }
+      ],
+      "soft_preferences": [
+        {
+          "field": "services",
+          "op": "contains",
+          "value": "干净舒适",
+          "source_text": "普通干净舒适就行"
+        }
+      ],
+      "objective": null
+    },
+    "attractions": {
+      "count": 1,
+      "selection": "top_k",
+      "required_names": [],
+      "constraints": [
+        {
+          "field": "attraction_type",
+          "op": "==",
+          "value": "自然风光",
+          "source_text": "自然风光类的景点"
+        }
+      ],
+      "soft_preferences": [],
+      "objective": {
+        "field": "rating",
+        "sense": "max",
+        "source_text": "评分最高",
+        "soft": false
+      },
+      "required_groups": []
+    },
+    "restaurants": {
+      "requirements": [
+        {
+          "required_name": null,
+          "nearby_location": "大连自然博物馆",
+          "constraints": [],
+          "soft_preferences": [
+            {
+              "field": "tags",
+              "op": "contains",
+              "value": "线上取号排队",
+              "source_text": "最好是那种可以线上取号排队的"
+            }
+          ],
+          "objective": {
+            "field": "rating",
+            "sense": "max",
+            "source_text": "评分最高",
+            "soft": false
+          }
+        }
+      ]
+    },
+    "global_constraints": [],
+    "explicit_preferences": []
+  },
+  "metrics": {
+    "llm_calls": 2,
+    "api_attempts": 2,
+    "input_tokens": 2191,
+    "output_tokens": 1631,
+    "total_tokens": 3822,
+    "tool_calls": 97,
+    "tool_calls_by_name": {
+      "query_train_info": 2,
+      "query_flight_info": 2,
+      "search_location": 2,
+      "recommend_restaurants": 6,
+      "query_hotel_info": 1,
+      "recommend_attractions": 2,
+      "query_attraction_details": 14,
+      "query_road_route_info": 68
+    },
+    "tool_errors": 0,
+    "duplicate_tool_calls_avoided": 0,
+    "solver_rounds": 6,
+    "master_assignments": 42,
+    "master_day_cuts": 0,
+    "constraint_propagations": 7,
+    "constraint_false": 0,
+    "constraint_unknown": 7,
+    "fastcheck_fact_requests": 0,
+    "frontier_states": 36,
+    "shared_fact_requests": 69,
+    "solver_runtime": 0.4774329662322998,
+    "solver_backend": "gurobi",
+    "route_queries": 68,
+    "parser_success": true,
+    "parser_attempts": 1,
+    "parser_validation_errors": [],
+    "semantic_audit_calls": 1,
+    "semantic_audit_retries": 0,
+    "semantic_audit_repairs": 1,
+    "semantic_audit_rejected": 0,
+    "semantic_recovery_calls": 0,
+    "ir_repairs_applied": 0,
+    "recovery_rejected": 0,
+    "recall_expansions_proposed": 0,
+    "recall_expansions_accepted": 0,
+    "verification_success": false,
+    "fallback_used": false,
+    "elapsed_time": 6.640454053878784
+  },
+  "semantic_events": [
+    {
+      "stage": "semantic_audit",
+      "verdict": "REPAIR",
+      "issues": [
+        {
+          "kind": "objective",
+          "source_text": "到得最晚的直达车",
+          "reason": "回程交通的目标应为最晚到达（arrival_time max），而不是出发晚或没有 objective；IR 将目标漏掉并错误地只保留了出发时间偏好。"
+        },
+        {
+          "kind": "modality",
+          "source_text": "回程的时候能尽量晚点回来",
+          "reason": "“尽量晚点回来”是软偏好，但实际用车次选择已明确要求“到得最晚”，应作为硬性优化目标；IR 中缺少该 objective。"
+        },
+        {
+          "kind": "objective",
+          "source_text": "评分最高的安排进去吧",
+          "reason": "景点要求“评分最高”，IR 正确将其作为 objective，但餐厅部分错误地也加上了“评分最高”目标，这属于额外添加。"
+        },
+        {
+          "kind": "incorrect",
+          "source_text": "最好是那种可以线上取号排队的",
+          "reason": "“可以线上取号排队”是餐厅的软偏好，IR 将其放入 soft_preferences 正确；但同一 requirement 中额外添加了未要求的 rating objective，应删除。"
+        },
+        {
+          "kind": "scope",
+          "source_text": "有一顿饭我想安排在‘大连自然博物馆’附近的餐厅",
+          "reason": "“有一顿饭”对应一个餐厅用餐安排，IR 用 requirements 单条表示基本正确，但额外添加的评分最高目标不符合用户原意。"
+        }
+      ],
+      "attempt": 1,
+      "applied": true
+    }
+  ],
+  "verification": null,
+  "state_summary": {
+    "counts": {
+      "flight": 6,
+      "train": 20,
+      "hotel": 20,
+      "attraction": 14,
+      "restaurant": 34,
+      "route": 68,
+      "location": 2
+    },
+    "queried_keys": [
+      "attractions:大连:all",
+      "attractions:大连:自然风光",
+      "details:attraction:东港商务区",
+      "details:attraction:中山广场",
+      "details:attraction:俄罗斯风情街",
+      "details:attraction:友好广场",
+      "details:attraction:大连博物馆",
+      "details:attraction:大连自然博物馆",
+      "details:attraction:大连金石滩生命奥秘博物馆",
+      "details:attraction:太阳沟风景区",
+      "details:attraction:星海公园",
+      "details:attraction:星海湾木栈道",
+      "details:attraction:莲花山观景台",
+      "details:attraction:青泥洼桥商圈",
+      "details:attraction:黄金海岸",
+      "details:attraction:黑石礁公园",
+      "hotels:大连:2025-11-12:2025-11-16:None:None",
+      "location:大连北站",
+      "location:大连自然博物馆",
+      "outbound:flight:哈尔滨:大连:2025-11-12",
+      "outbound:train:哈尔滨:大连:2025-11-12",
+      "restaurants:generic:38.869587,121.558934",
+      "restaurants:generic:38.877811,121.568075",
+      "restaurants:generic:38.879606,121.608727",
+      "restaurants:generic:38.882006,121.587922",
+      "restaurants:generic:39.076061,122.003474",
+      "restaurants:大连自然博物馆:38.870371,121.561602",
+      "return:flight:大连:哈尔滨:2025-11-16",
+      "return:train:大连:哈尔滨:2025-11-16",
+      "route:东北财经大学第二餐厅->友好广场",
+      "route:东北财经大学第二餐厅->大连博物馆",
+      "route:东北财经大学第二餐厅->星海公园",
+      "route:东北财经大学第二餐厅->星海湾木栈道",
+      "route:东北财经大学第二餐厅->莲花山观景台",
+      "route:东港商务区->东北财经大学第二餐厅",
+      "route:东港商务区->天池餐馆(黑石礁街)",
+      "route:东港商务区->日月明小渔村(星海广场店)",
+      "route:东港商务区->海遇mangata coffee(星海店)",
+      "route:东港商务区->雅洁餐馆",
+      "route:中山广场->东北财经大学第二餐厅",
+      "route:中山广场->天池餐馆(黑石礁街)",
+      "route:中山广场->日月明小渔村(星海广场店)",
+      "route:中山广场->海遇mangata coffee(星海店)",
+      "route:中山广场->雅洁餐馆",
+      "route:中山广场->鲜之道餐厅(星海新天地店)",
+      "route:俄罗斯风情街->东北财经大学第二餐厅",
+      "route:俄罗斯风情街->日月明小渔村(星海广场店)",
+      "route:俄罗斯风情街->海遇mangata coffee(星海店)",
+      "route:俄罗斯风情街->雅洁餐馆",
+      "route:凤凰餐厅(中山路)->大连中山希尔顿欢朋酒店",
+      "route:友好广场->凤凰餐厅(中山路)",
+      "route:友好广场->天池餐馆(黑石礁街)",
+      "route:友好广场->柠澜lemon land餐厅",
+      "route:友好广场->源本堂餐厅",
+      "route:大连中山希尔顿欢朋酒店->东港商务区",
+      "route:大连中山希尔顿欢朋酒店->中山广场",
+      "route:大连中山希尔顿欢朋酒店->俄罗斯风情街",
+      "route:大连中山希尔顿欢朋酒店->友好广场",
+      "route:大连中山希尔顿欢朋酒店->大连博物馆",
+      "route:大连中山希尔顿欢朋酒店->青泥洼桥商圈",
+      "route:大连北站->大连中山希尔顿欢朋酒店",
+      "route:大连博物馆->东北财经大学第二餐厅",
+      "route:大连博物馆->天池餐馆(黑石礁街)",
+      "route:大连博物馆->日月明小渔村(星海广场店)",
+      "route:大连博物馆->海遇mangata coffee(星海店)",
+      "route:大连博物馆->源本堂餐厅",
+      "route:大连博物馆->雅洁餐馆",
+      "route:大连博物馆->鲜之道餐厅(星海新天地店)",
+      "route:天池餐馆(黑石礁街)->友好广场",
+      "route:天池餐馆(黑石礁街)->星海公园",
+      "route:天池餐馆(黑石礁街)->星海湾木栈道",
+      "route:天池餐馆(黑石礁街)->莲花山观景台",
+      "route:日月明小渔村(星海广场店)->大连中山希尔顿欢朋酒店",
+      "route:星海公园->凤凰餐厅(中山路)",
+      "route:星海公园->柠澜lemon land餐厅",
+      "route:星海公园->源本堂餐厅",
+      "route:星海湾木栈道->凤凰餐厅(中山路)",
+      "route:星海湾木栈道->柠澜lemon land餐厅",
+      "route:星海湾木栈道->源本堂餐厅",
+      "route:柠澜lemon land餐厅->大连中山希尔顿欢朋酒店",
+      "route:海遇mangata coffee(星海店)->友好广场",
+      "route:海遇mangata coffee(星海店)->大连博物馆",
+      "route:海遇mangata coffee(星海店)->星海公园",
+      "route:海遇mangata coffee(星海店)->星海湾木栈道",
+      "route:源本堂餐厅->大连中山希尔顿欢朋酒店",
+      "route:莲花山观景台->大连北站",
+      "route:雅洁餐馆->友好广场",
+      "route:雅洁餐馆->星海公园",
+      "route:雅洁餐馆->星海湾木栈道",
+      "route:雅洁餐馆->莲花山观景台",
+      "route:青泥洼桥商圈->东北财经大学第二餐厅",
+      "route:青泥洼桥商圈->天池餐馆(黑石礁街)",
+      "route:青泥洼桥商圈->日月明小渔村(星海广场店)",
+      "route:青泥洼桥商圈->海遇mangata coffee(星海店)",
+      "route:青泥洼桥商圈->雅洁餐馆",
+      "route:青泥洼桥商圈->鲜之道餐厅(星海新天地店)",
+      "route:鲜之道餐厅(星海新天地店)->大连北站"
+    ],
+    "failed_requests": {},
+    "sample_records": {
+      "flight": [
+        {
+          "name": "CA8905+CA1641",
+          "price": 393.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "大连",
+          "destination": "哈尔滨",
+          "departure_station": "周水子机场",
+          "arrival_station": "太平国际机场",
+          "departure_time": 840,
+          "arrival_time": 1270,
+          "departure_date": "2025-11-16",
+          "arrival_date": "2025-11-16",
+          "duration": 190,
+          "direct": false,
+          "seat_class": "经济舱",
+          "train_type": "国航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "PEK",
+              "arrStationName": "首都国际机场",
+              "depCityName": "大连",
+              "depStationCode": "DLC",
+              "depStationName": "周水子机场",
+              "duration": 80,
+              "arrDateTime": "2025-11-16 15:20:00",
+              "depDateTime": "2025-11-16 14:00:00",
+              "marketingTransportName": "国航",
+              "marketingTransportNo": "CA8905",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            },
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "HRB",
+              "arrStationName": "太平国际机场",
+              "depCityName": "大连",
+              "depStationCode": "PEK",
+              "depStationName": "首都国际机场",
+              "duration": 110,
+              "arrDateTime": "2025-11-16 21:10:00",
+              "depDateTime": "2025-11-16 19:20:00",
+              "marketingTransportName": "国航",
+              "marketingTransportNo": "CA1641",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "320",
+              "manufacturer": "空客"
+            }
+          ]
+        },
+        {
+          "name": "CA8909+CA1641",
+          "price": 393.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "大连",
+          "destination": "哈尔滨",
+          "departure_station": "周水子机场",
+          "arrival_station": "太平国际机场",
+          "departure_time": 780,
+          "arrival_time": 1270,
+          "departure_date": "2025-11-16",
+          "arrival_date": "2025-11-16",
+          "duration": 195,
+          "direct": false,
+          "seat_class": "经济舱",
+          "train_type": "国航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "PEK",
+              "arrStationName": "首都国际机场",
+              "depCityName": "大连",
+              "depStationCode": "DLC",
+              "depStationName": "周水子机场",
+              "duration": 85,
+              "arrDateTime": "2025-11-16 14:25:00",
+              "depDateTime": "2025-11-16 13:00:00",
+              "marketingTransportName": "国航",
+              "marketingTransportNo": "CA8909",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            },
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "HRB",
+              "arrStationName": "太平国际机场",
+              "depCityName": "大连",
+              "depStationCode": "PEK",
+              "depStationName": "首都国际机场",
+              "duration": 110,
+              "arrDateTime": "2025-11-16 21:10:00",
+              "depDateTime": "2025-11-16 19:20:00",
+              "marketingTransportName": "国航",
+              "marketingTransportNo": "CA1641",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "320",
+              "manufacturer": "空客"
+            }
+          ]
+        },
+        {
+          "name": "CA8905+CA1639",
+          "price": 393.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "大连",
+          "destination": "哈尔滨",
+          "departure_station": "周水子机场",
+          "arrival_station": "太平国际机场",
+          "departure_time": 840,
+          "arrival_time": 1345,
+          "departure_date": "2025-11-16",
+          "arrival_date": "2025-11-16",
+          "duration": 180,
+          "direct": false,
+          "seat_class": "经济舱",
+          "train_type": "国航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "PEK",
+              "arrStationName": "首都国际机场",
+              "depCityName": "大连",
+              "depStationCode": "DLC",
+              "depStationName": "周水子机场",
+              "duration": 80,
+              "arrDateTime": "2025-11-16 15:20:00",
+              "depDateTime": "2025-11-16 14:00:00",
+              "marketingTransportName": "国航",
+              "marketingTransportNo": "CA8905",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            },
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "HRB",
+              "arrStationName": "太平国际机场",
+              "depCityName": "大连",
+              "depStationCode": "PEK",
+              "depStationName": "首都国际机场",
+              "duration": 100,
+              "arrDateTime": "2025-11-16 22:25:00",
+              "depDateTime": "2025-11-16 20:45:00",
+              "marketingTransportName": "国航",
+              "marketingTransportNo": "CA1639",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            }
+          ]
+        }
+      ],
+      "train": [
+        {
+          "name": "K2623",
+          "price": 124.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "大连",
+          "destination": "哈尔滨",
+          "departure_station": "大连站",
+          "arrival_station": "哈尔滨站",
+          "departure_time": 466,
+          "arrival_time": 1256,
+          "departure_date": "2025-11-16",
+          "arrival_date": "2025-11-16",
+          "duration": 790,
+          "direct": true,
+          "seat_class": "硬座",
+          "train_type": "普快",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "HBB",
+              "arrStationName": "哈尔滨站",
+              "depCityName": "大连",
+              "depStationCode": "DLT",
+              "depStationName": "大连站",
+              "duration": 790,
+              "arrDateTime": "2025-11-16 20:56:00",
+              "depDateTime": "2025-11-16 07:46:00",
+              "marketingTransportName": "普快",
+              "marketingTransportNo": "K2623",
+              "seatClassName": "硬座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "G703",
+          "price": 403.5,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "大连",
+          "destination": "哈尔滨",
+          "departure_station": "大连北站",
+          "arrival_station": "哈尔滨西站",
+          "departure_time": 420,
+          "arrival_time": 662,
+          "departure_date": "2025-11-16",
+          "arrival_date": "2025-11-16",
+          "duration": 242,
+          "direct": true,
+          "seat_class": "二等座",
+          "train_type": "高铁",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "VAB",
+              "arrStationName": "哈尔滨西站",
+              "depCityName": "大连",
+              "depStationCode": "DFT",
+              "depStationName": "大连北站",
+              "duration": 242,
+              "arrDateTime": "2025-11-16 11:02:00",
+              "depDateTime": "2025-11-16 07:00:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G703",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "G47",
+          "price": 423.5,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "大连",
+          "destination": "哈尔滨",
+          "departure_station": "大连北站",
+          "arrival_station": "哈尔滨西站",
+          "departure_time": 482,
+          "arrival_time": 698,
+          "departure_date": "2025-11-16",
+          "arrival_date": "2025-11-16",
+          "duration": 216,
+          "direct": true,
+          "seat_class": "二等座",
+          "train_type": "高铁",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "哈尔滨",
+              "arrStationCode": "VAB",
+              "arrStationName": "哈尔滨西站",
+              "depCityName": "大连",
+              "depStationCode": "DFT",
+              "depStationName": "大连北站",
+              "duration": 216,
+              "arrDateTime": "2025-11-16 11:38:00",
+              "depDateTime": "2025-11-16 08:02:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G47",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        }
+      ],
+      "hotel": [
+        {
+          "name": "全季大连人民路酒店",
+          "price": 257.0,
+          "rating": 4.6,
+          "city": null,
+          "address": "大连市中山区人民路19号",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 38.922757,
+          "lon": 121.648028,
+          "star": 3.0,
+          "services": [],
+          "brand": "全季",
+          "decoration_year": 2019.0
+        },
+        {
+          "name": "大连星海假日酒店",
+          "price": 389.0,
+          "rating": 4.6,
+          "city": null,
+          "address": "星海广场C1区32号(星海广场商圈，紧邻游艇俱乐部及圣亚海洋世界)",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 38.879945,
+          "lon": 121.573674,
+          "star": 5.0,
+          "services": [],
+          "brand": "",
+          "decoration_year": 2021.0
+        },
+        {
+          "name": "大连富力希尔顿酒店",
+          "price": 654.0,
+          "rating": 4.3,
+          "city": null,
+          "address": "港浦路1号 ，近人民路",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 38.929115,
+          "lon": 121.66953,
+          "star": 5.0,
+          "services": [],
+          "brand": "希尔顿",
+          "decoration_year": 2018.0
+        }
+      ],
+      "attraction": [
+        {
+          "name": "黄金海岸",
+          "price": 0.0,
+          "rating": 4.8,
+          "city": "大连",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 39.076061,
+          "lon": 122.003474,
+          "min_duration": 90,
+          "max_duration": 180,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "自然风光",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "星海公园",
+          "price": 0.0,
+          "rating": 4.9,
+          "city": "大连",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 38.877811,
+          "lon": 121.568075,
+          "min_duration": 120,
+          "max_duration": 210,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "自然风光",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "星海湾木栈道",
+          "price": 0.0,
+          "rating": 4.7,
+          "city": "大连",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 38.882006,
+          "lon": 121.587922,
+          "min_duration": 30,
+          "max_duration": 120,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "自然风光",
+          "closing_dates": "nan"
+        }
+      ],
+      "restaurant": [
+        {
+          "name": "天池餐馆(黑石礁街)",
+          "price": 23.0,
+          "rating": 4.4,
+          "city": null,
+          "address": null,
+          "opening_time": 600,
+          "closing_time": 1320,
+          "lat": 38.872667,
+          "lon": 121.556567,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [
+            "有等位区"
+          ],
+          "nearby_location": "黑石礁公园",
+          "attraction_type": null
+        },
+        {
+          "name": "旅大印象·大连本帮菜馆(星海店)",
+          "price": 100.0,
+          "rating": 4.6,
+          "city": null,
+          "address": null,
+          "opening_time": 630,
+          "closing_time": 1260,
+          "lat": 38.874363,
+          "lon": 121.558179,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;海鲜酒楼",
+          "tags": [
+            "有包间",
+            "有等位区"
+          ],
+          "nearby_location": "大连自然博物馆",
+          "attraction_type": null
+        },
+        {
+          "name": "仚·全日臻享餐厅(富丽庭店)",
+          "price": 100.0,
+          "rating": 4.5,
+          "city": null,
+          "address": null,
+          "opening_time": 660,
+          "closing_time": 1260,
+          "lat": 38.876408,
+          "lon": 121.557763,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;外国餐厅;西餐厅(综合风味)",
+          "tags": [
+            "必吃榜top10",
+            "户外座位"
+          ],
+          "nearby_location": "大连自然博物馆",
+          "attraction_type": null
+        }
+      ],
+      "route": [
+        {
+          "name": "大连北站 -> 大连中山希尔顿欢朋酒店",
+          "price": 65.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "大连北站",
+          "destination": "大连中山希尔顿欢朋酒店",
+          "distance": 17360,
+          "duration": 26,
+          "mode": "taxi"
+        },
+        {
+          "name": "青泥洼桥商圈 -> 东北财经大学第二餐厅",
+          "price": 41.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "青泥洼桥商圈",
+          "destination": "东北财经大学第二餐厅",
+          "distance": 11310,
+          "duration": 17,
+          "mode": "taxi"
+        },
+        {
+          "name": "雅洁餐馆 -> 莲花山观景台",
+          "price": 25.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "雅洁餐馆",
+          "destination": "莲花山观景台",
+          "distance": 6420,
+          "duration": 10,
+          "mode": "taxi"
+        }
+      ],
+      "location": [
+        {
+          "name": "大连自然博物馆",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 38.870371,
+          "lon": 121.561602
+        },
+        {
+          "name": "大连北站",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 39.01671,
+          "lon": 121.607299
+        }
+      ]
+    }
+  },
+  "solution": null,
+  "constraint_summary": {
+    "truth": "SAT",
+    "satisfied": 11,
+    "unresolved": 1,
+    "conflicts": [],
+    "missing_fact_keys": []
+  },
+  "failure": {
+    "reason": "structured_solver_failed",
+    "last_status": "NEEDS_INFO",
+    "last_reason": "frontier selected-route facts required",
+    "conflict": {}
+  }
+}

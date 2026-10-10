@@ -1,0 +1,720 @@
+{
+  "id": "id_52",
+  "query": "我想2025年11月12号从合肥出发去成都玩几天，15号回来，一共四天三晚。交通的话，去的时候想坐飞机，帮我选一个直飞的航班就行，票价越便宜越好，毕竟预算有限。回程也是坐飞机，不用特别讲究，时间上随意。\n\n住宿方面，我希望住一间四星级酒店，最好是那种带机器人送餐服务的，这样感觉很方便，也挺有意思的，麻烦你帮我找找看有没有符合这个条件的。\n\n对了，我想在旅途中安排一顿特别的饭局，听说'蜀风雅韵川剧院'附近有不少好吃的，麻烦帮我找一家那一带评分最高的餐厅，想体验一下地道的美食。另外，景点的话，我想去一些最值得打卡的地方，你帮我把工具里推荐评分最高的三个景点都安排到行程里吧，时间上尽量合理一点。\n\n基本上我的需求就这些啦，信息应该都清楚了，你直接帮我把行程和安排规划出来吧！ 2025年11月12号是周三",
+  "model": "deepseek-flash",
+  "language": "zh",
+  "final_plan": "",
+  "success": false,
+  "problem_ir": {
+    "trip": {
+      "origin": "合肥",
+      "destination": "成都",
+      "start_date": "2025-11-12",
+      "end_date": "2025-11-15",
+      "travelers": 1,
+      "rooms": 1,
+      "budget_max": null,
+      "currency": "RMB"
+    },
+    "transport": {
+      "outbound": {
+        "allowed_modes": [
+          "flight"
+        ],
+        "constraints": [
+          {
+            "field": "direct",
+            "op": "==",
+            "value": true,
+            "source_text": "直飞的航班"
+          }
+        ],
+        "soft_preferences": [],
+        "objective": null
+      },
+      "return": {
+        "allowed_modes": [
+          "flight"
+        ],
+        "constraints": [],
+        "soft_preferences": [],
+        "objective": null
+      }
+    },
+    "hotel": {
+      "constraints": [
+        {
+          "field": "star",
+          "op": "==",
+          "value": 4.0,
+          "source_text": "一间四星级酒店"
+        }
+      ],
+      "soft_preferences": [
+        {
+          "field": "services",
+          "op": "contains",
+          "value": "机器人送餐服务",
+          "source_text": "最好是那种带机器人送餐服务的"
+        }
+      ],
+      "objective": null
+    },
+    "attractions": {
+      "count": 3,
+      "selection": "top_k",
+      "required_names": [],
+      "constraints": [],
+      "soft_preferences": [],
+      "objective": {
+        "field": "rating",
+        "sense": "max",
+        "source_text": "评分最高的三个景点",
+        "soft": false
+      },
+      "required_groups": []
+    },
+    "restaurants": {
+      "requirements": [
+        {
+          "required_name": null,
+          "nearby_location": "蜀风雅韵川剧院",
+          "constraints": [],
+          "soft_preferences": [],
+          "objective": {
+            "field": "rating",
+            "sense": "max",
+            "source_text": "评分最高的餐厅",
+            "soft": false
+          },
+          "count": 1,
+          "meal_scope": "one_meal_during_trip",
+          "source_text": "安排一顿特别的饭局"
+        }
+      ]
+    },
+    "global_constraints": [],
+    "explicit_preferences": []
+  },
+  "metrics": {
+    "llm_calls": 4,
+    "api_attempts": 4,
+    "input_tokens": 6339,
+    "output_tokens": 2381,
+    "total_tokens": 8720,
+    "tool_calls": 97,
+    "tool_calls_by_name": {
+      "query_flight_info": 2,
+      "search_location": 3,
+      "recommend_restaurants": 6,
+      "query_hotel_info": 1,
+      "recommend_attractions": 1,
+      "query_attraction_details": 9,
+      "query_road_route_info": 75
+    },
+    "tool_errors": 0,
+    "duplicate_tool_calls_avoided": 0,
+    "solver_rounds": 6,
+    "master_assignments": 34,
+    "master_day_cuts": 10,
+    "constraint_propagations": 7,
+    "constraint_false": 0,
+    "constraint_unknown": 7,
+    "fastcheck_fact_requests": 0,
+    "frontier_states": 36,
+    "shared_fact_requests": 77,
+    "solver_runtime": 0.15059924125671387,
+    "solver_backend": "gurobi",
+    "route_queries": 75,
+    "parser_success": true,
+    "parser_attempts": 3,
+    "parser_validation_errors": [
+      "invalid clock constraint: {'field': 'departure_time', 'op': '==', 'value': 'any', 'source_text': '时间上随意'}",
+      "unsupported attraction constraint field: 'arrangement'"
+    ],
+    "semantic_audit_calls": 1,
+    "semantic_audit_retries": 0,
+    "semantic_audit_repairs": 1,
+    "semantic_audit_rejected": 0,
+    "semantic_recovery_calls": 0,
+    "ir_repairs_applied": 0,
+    "recovery_rejected": 0,
+    "recall_expansions_proposed": 0,
+    "recall_expansions_accepted": 0,
+    "verification_success": false,
+    "fallback_used": false,
+    "elapsed_time": 9.656203985214233
+  },
+  "semantic_events": [
+    {
+      "stage": "semantic_audit",
+      "verdict": "REPAIR",
+      "issues": [
+        {
+          "kind": "objective",
+          "source_text": "票价越便宜越好",
+          "reason": "Outbound flight explicitly requires cheapest fare preference (Pareto min price); parsed IR has outbound objective=null."
+        },
+        {
+          "kind": "modality",
+          "source_text": "预算有限",
+          "reason": "Budget limitation is explicitly stated for fares/trip, but budget_max remains null without a source-backed extraction or explicit non-constraint."
+        },
+        {
+          "kind": "scope",
+          "source_text": "旅行中安排一顿特别的饭局",
+          "reason": "Restaurant requirement is stated as one special meal during the trip; parsed restaurant requirements do not encode a count/meal scope."
+        }
+      ],
+      "attempt": 1,
+      "applied": true
+    }
+  ],
+  "verification": null,
+  "state_summary": {
+    "counts": {
+      "flight": 20,
+      "train": 0,
+      "hotel": 7,
+      "attraction": 9,
+      "restaurant": 55,
+      "route": 75,
+      "location": 3
+    },
+    "queried_keys": [
+      "attractions:成都:all",
+      "details:attraction:ifs国际金融中心",
+      "details:attraction:南桥",
+      "details:attraction:宽窄巷子景区",
+      "details:attraction:建设路小吃街",
+      "details:attraction:成都武侯祠博物馆",
+      "details:attraction:蜀风雅韵川剧院",
+      "details:attraction:金沙遗址博物馆",
+      "details:attraction:镋钯街",
+      "details:attraction:青羊宫",
+      "hotels:成都:2025-11-12:2025-11-15:4.0:None",
+      "location:双流国际机场",
+      "location:天府机场",
+      "location:蜀风雅韵川剧院",
+      "outbound:flight:合肥:成都:2025-11-12",
+      "restaurants:generic:30.645000,104.055000",
+      "restaurants:generic:30.661542,104.042609",
+      "restaurants:generic:30.671442,104.102739",
+      "restaurants:generic:30.681709,104.012634",
+      "restaurants:generic:30.996316,103.615948",
+      "restaurants:蜀风雅韵川剧院:30.654000,104.043000",
+      "return:flight:成都:合肥:2025-11-15",
+      "route:ifs国际金融中心->不二隐庐(百花店)",
+      "route:ifs国际金融中心->实惠餐馆(战旗东路6号院店)",
+      "route:ifs国际金融中心->德克士建设路餐厅",
+      "route:ifs国际金融中心->益民餐馆(益民苑店)",
+      "route:ifs国际金融中心->遇芙花园·暹罗厨房",
+      "route:ifs国际金融中心->鄢知味冒菜(建设路43号82小区2区老店)",
+      "route:不二隐庐(百花店)->恒尚精品酒店（犀浦地铁站夜市美食街店）",
+      "route:不二隐庐(百花店)->成都天府新区福朋喜来登酒店",
+      "route:乔月珍茶餐厅->南桥",
+      "route:乔月珍茶餐厅->镋钯街",
+      "route:华利餐厅(锦里西路店)->成都天府新区福朋喜来登酒店",
+      "route:南桥->华利餐厅(锦里西路店)",
+      "route:南桥->清真麦加餐厅",
+      "route:南桥->益民餐馆(益民苑店)",
+      "route:南桥->蜀中老味道特色食材餐厅",
+      "route:南桥->鄢知味冒菜(建设路43号82小区2区老店)",
+      "route:双流国际机场->成都天府新区福朋喜来登酒店",
+      "route:天府机场->恒尚精品酒店（犀浦地铁站夜市美食街店）",
+      "route:天府机场->成都天府新区福朋喜来登酒店",
+      "route:实惠餐馆(战旗东路6号院店)->ifs国际金融中心",
+      "route:实惠餐馆(战旗东路6号院店)->南桥",
+      "route:实惠餐馆(战旗东路6号院店)->金沙遗址博物馆",
+      "route:实惠餐馆(战旗东路6号院店)->镋钯街",
+      "route:实惠餐馆(战旗东路6号院店)->青羊宫",
+      "route:宽窄巷子景区->不二隐庐(百花店)",
+      "route:宽窄巷子景区->乔月珍茶餐厅",
+      "route:宽窄巷子景区->实惠餐馆(战旗东路6号院店)",
+      "route:宽窄巷子景区->德克士建设路餐厅",
+      "route:宽窄巷子景区->遇芙花园·暹罗厨房",
+      "route:德克士建设路餐厅->南桥",
+      "route:德克士建设路餐厅->金沙遗址博物馆",
+      "route:德克士建设路餐厅->青羊宫",
+      "route:恒尚精品酒店（犀浦地铁站夜市美食街店）->宽窄巷子景区",
+      "route:恒尚精品酒店（犀浦地铁站夜市美食街店）->蜀风雅韵川剧院",
+      "route:恒尚精品酒店（犀浦地铁站夜市美食街店）->金沙遗址博物馆",
+      "route:恒尚精品酒店（犀浦地铁站夜市美食街店）->青羊宫",
+      "route:成都天府新区福朋喜来登酒店->ifs国际金融中心",
+      "route:成都天府新区福朋喜来登酒店->宽窄巷子景区",
+      "route:成都天府新区福朋喜来登酒店->成都武侯祠博物馆",
+      "route:成都天府新区福朋喜来登酒店->镋钯街",
+      "route:成都武侯祠博物馆->不二隐庐(百花店)",
+      "route:成都武侯祠博物馆->实惠餐馆(战旗东路6号院店)",
+      "route:成都武侯祠博物馆->德克士建设路餐厅",
+      "route:成都武侯祠博物馆->遇芙花园·暹罗厨房",
+      "route:清真麦加餐厅->成都天府新区福朋喜来登酒店",
+      "route:益民餐馆(益民苑店)->恒尚精品酒店（犀浦地铁站夜市美食街店）",
+      "route:蜀中老味道特色食材餐厅->恒尚精品酒店（犀浦地铁站夜市美食街店）",
+      "route:蜀风雅韵川剧院->不二隐庐(百花店)",
+      "route:蜀风雅韵川剧院->乔月珍茶餐厅",
+      "route:蜀风雅韵川剧院->实惠餐馆(战旗东路6号院店)",
+      "route:蜀风雅韵川剧院->遇芙花园·暹罗厨房",
+      "route:遇芙花园·暹罗厨房->ifs国际金融中心",
+      "route:遇芙花园·暹罗厨房->南桥",
+      "route:遇芙花园·暹罗厨房->金沙遗址博物馆",
+      "route:遇芙花园·暹罗厨房->青羊宫",
+      "route:鄢知味冒菜(建设路43号82小区2区老店)->天府机场",
+      "route:金沙遗址博物馆->不二隐庐(百花店)",
+      "route:金沙遗址博物馆->华利餐厅(锦里西路店)",
+      "route:金沙遗址博物馆->实惠餐馆(战旗东路6号院店)",
+      "route:金沙遗址博物馆->清真麦加餐厅",
+      "route:金沙遗址博物馆->遇芙花园·暹罗厨房",
+      "route:金沙遗址博物馆->鄢知味冒菜(建设路43号82小区2区老店)",
+      "route:镋钯街->不二隐庐(百花店)",
+      "route:镋钯街->实惠餐馆(战旗东路6号院店)",
+      "route:镋钯街->德克士建设路餐厅",
+      "route:镋钯街->益民餐馆(益民苑店)",
+      "route:镋钯街->蜀中老味道特色食材餐厅",
+      "route:镋钯街->遇芙花园·暹罗厨房",
+      "route:镋钯街->鄢知味冒菜(建设路43号82小区2区老店)",
+      "route:青羊宫->不二隐庐(百花店)",
+      "route:青羊宫->华利餐厅(锦里西路店)",
+      "route:青羊宫->实惠餐馆(战旗东路6号院店)",
+      "route:青羊宫->清真麦加餐厅",
+      "route:青羊宫->遇芙花园·暹罗厨房",
+      "route:青羊宫->鄢知味冒菜(建设路43号82小区2区老店)"
+    ],
+    "failed_requests": {},
+    "sample_records": {
+      "flight": [
+        {
+          "name": "MU5418+MU6581",
+          "price": 900.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "成都",
+          "destination": "合肥",
+          "departure_station": "双流国际机场",
+          "arrival_station": "新桥国际机场",
+          "departure_time": 1050,
+          "arrival_time": 1405,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 250,
+          "direct": false,
+          "seat_class": "经济舱",
+          "train_type": "东航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "合肥",
+              "arrStationCode": "PVG",
+              "arrStationName": "浦东国际机场",
+              "depCityName": "成都",
+              "depStationCode": "CTU",
+              "depStationName": "双流国际机场",
+              "duration": 160,
+              "arrDateTime": "2025-11-15 20:10:00",
+              "depDateTime": "2025-11-15 17:30:00",
+              "marketingTransportName": "东航",
+              "marketingTransportNo": "MU5418",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "320",
+              "manufacturer": "空客"
+            },
+            {
+              "arrCityName": "合肥",
+              "arrStationCode": "HFE",
+              "arrStationName": "新桥国际机场",
+              "depCityName": "成都",
+              "depStationCode": "PVG",
+              "depStationName": "浦东国际机场",
+              "duration": 90,
+              "arrDateTime": "2025-11-15 23:25:00",
+              "depDateTime": "2025-11-15 21:55:00",
+              "marketingTransportName": "东航",
+              "marketingTransportNo": "MU6581",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "320",
+              "manufacturer": "空客"
+            }
+          ]
+        },
+        {
+          "name": "DR6522+MF3809",
+          "price": 1086.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "成都",
+          "destination": "合肥",
+          "departure_station": "天府机场",
+          "arrival_station": "新桥国际机场",
+          "departure_time": 640,
+          "arrival_time": 955,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 220,
+          "direct": false,
+          "seat_class": "经济舱",
+          "train_type": "苏南瑞丽航",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "合肥",
+              "arrStationCode": "KMG",
+              "arrStationName": "长水机场",
+              "depCityName": "成都",
+              "depStationCode": "TFU",
+              "depStationName": "天府机场",
+              "duration": 75,
+              "arrDateTime": "2025-11-15 11:55:00",
+              "depDateTime": "2025-11-15 10:40:00",
+              "marketingTransportName": "苏南瑞丽航",
+              "marketingTransportNo": "DR6522",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "737",
+              "manufacturer": "波音"
+            },
+            {
+              "arrCityName": "合肥",
+              "arrStationCode": "HFE",
+              "arrStationName": "新桥国际机场",
+              "depCityName": "成都",
+              "depStationCode": "KMG",
+              "depStationName": "长水机场",
+              "duration": 145,
+              "arrDateTime": "2025-11-15 15:55:00",
+              "depDateTime": "2025-11-15 13:30:00",
+              "marketingTransportName": "厦航",
+              "marketingTransportNo": "MF3809",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "320",
+              "manufacturer": "空客"
+            }
+          ]
+        },
+        {
+          "name": "PN6258",
+          "price": 350.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "flight",
+          "origin": "成都",
+          "destination": "合肥",
+          "departure_station": "天府机场",
+          "arrival_station": "新桥国际机场",
+          "departure_time": 1215,
+          "arrival_time": 1330,
+          "departure_date": "2025-11-15",
+          "arrival_date": "2025-11-15",
+          "duration": 115,
+          "direct": true,
+          "seat_class": "经济舱",
+          "train_type": "海航｜西部航空",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "合肥",
+              "arrStationCode": "HFE",
+              "arrStationName": "新桥国际机场",
+              "depCityName": "成都",
+              "depStationCode": "TFU",
+              "depStationName": "天府机场",
+              "duration": 115,
+              "arrDateTime": "2025-11-15 22:10:00",
+              "depDateTime": "2025-11-15 20:15:00",
+              "marketingTransportName": "海航｜西部航空",
+              "marketingTransportNo": "PN6258",
+              "seatClassName": "经济舱",
+              "剩余票数量": "充足",
+              "equipSize": "中型机",
+              "equipType": "320",
+              "manufacturer": "空客"
+            }
+          ]
+        }
+      ],
+      "hotel": [
+        {
+          "name": "成都九眼桥亚朵网易严选酒店",
+          "price": 482.0,
+          "rating": 4.7,
+          "city": null,
+          "address": "成都锦江区通宝街泰合财富中心6栋一单元",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.635299,
+          "lon": 104.107025,
+          "star": 4.0,
+          "services": [
+            "泳池",
+            "洗衣机和烘干机"
+          ],
+          "brand": "亚朵",
+          "decoration_year": 2019.0
+        },
+        {
+          "name": "恒尚精品酒店（犀浦地铁站夜市美食街店）",
+          "price": 270.0,
+          "rating": 4.9,
+          "city": null,
+          "address": "成都市郫都区犀浦街道恒山南街278号",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.75421,
+          "lon": 103.961986,
+          "star": 4.0,
+          "services": [
+            "免费停车",
+            "洗衣机和烘干机",
+            "电视可投屏"
+          ],
+          "brand": "",
+          "decoration_year": 2024.0
+        },
+        {
+          "name": "成都春熙路太升南路地铁站亚朵酒店",
+          "price": 466.0,
+          "rating": 4.3,
+          "city": null,
+          "address": "成都市锦江区东玉龙街52号",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.66472,
+          "lon": 104.080344,
+          "star": 4.0,
+          "services": [
+            "免费停车",
+            "泳池",
+            "电视可投屏"
+          ],
+          "brand": "亚朵",
+          "decoration_year": 2024.0
+        }
+      ],
+      "attraction": [
+        {
+          "name": "南桥",
+          "price": 0.0,
+          "rating": 4.8,
+          "city": "成都",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.996316,
+          "lon": 103.615948,
+          "min_duration": 30,
+          "max_duration": 120,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "蜀风雅韵川剧院",
+          "price": 148.0,
+          "rating": 4.5,
+          "city": "成都",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.654,
+          "lon": 104.043,
+          "min_duration": 90,
+          "max_duration": 180,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "青羊宫",
+          "price": 10.0,
+          "rating": 4.8,
+          "city": "成都",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.661542,
+          "lon": 104.042609,
+          "min_duration": 60,
+          "max_duration": 150,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "nan"
+        }
+      ],
+      "restaurant": [
+        {
+          "name": "N度8音乐餐吧",
+          "price": 90.0,
+          "rating": 4.3,
+          "city": null,
+          "address": null,
+          "opening_time": 960,
+          "closing_time": 120,
+          "lat": 30.654866,
+          "lon": 104.043991,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [],
+          "nearby_location": "蜀风雅韵川剧院",
+          "attraction_type": null
+        },
+        {
+          "name": "四川省社科院子衿餐厅",
+          "price": 100.0,
+          "rating": 3.6,
+          "city": null,
+          "address": null,
+          "opening_time": 660,
+          "closing_time": 1260,
+          "lat": 30.653328,
+          "lon": 104.044438,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [],
+          "nearby_location": "蜀风雅韵川剧院",
+          "attraction_type": null
+        },
+        {
+          "name": "不二隐庐(百花店)",
+          "price": 239.0,
+          "rating": 4.6,
+          "city": null,
+          "address": null,
+          "opening_time": 600,
+          "closing_time": 1260,
+          "lat": 30.655162,
+          "lon": 104.040142,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;餐饮相关场所;餐饮相关|购物服务;购物相关场所;购物相关场所",
+          "tags": [],
+          "nearby_location": "蜀风雅韵川剧院",
+          "attraction_type": null
+        }
+      ],
+      "route": [
+        {
+          "name": "天府机场 -> 成都天府新区福朋喜来登酒店",
+          "price": 207.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "天府机场",
+          "destination": "成都天府新区福朋喜来登酒店",
+          "distance": 52730,
+          "duration": 79,
+          "mode": "taxi"
+        },
+        {
+          "name": "天府机场 -> 恒尚精品酒店（犀浦地铁站夜市美食街店）",
+          "price": 376.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "天府机场",
+          "destination": "恒尚精品酒店（犀浦地铁站夜市美食街店）",
+          "distance": 95110,
+          "duration": 143,
+          "mode": "taxi"
+        },
+        {
+          "name": "双流国际机场 -> 成都天府新区福朋喜来登酒店",
+          "price": 101.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": null,
+          "lon": null,
+          "origin": "双流国际机场",
+          "destination": "成都天府新区福朋喜来登酒店",
+          "distance": 26320,
+          "duration": 39,
+          "mode": "taxi"
+        }
+      ],
+      "location": [
+        {
+          "name": "蜀风雅韵川剧院",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.654,
+          "lon": 104.043
+        },
+        {
+          "name": "天府机场",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.308016,
+          "lon": 104.446518
+        },
+        {
+          "name": "双流国际机场",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 30.559807,
+          "lon": 103.951229
+        }
+      ]
+    }
+  },
+  "solution": null,
+  "constraint_summary": {
+    "truth": "SAT",
+    "satisfied": 10,
+    "unresolved": 1,
+    "conflicts": [],
+    "missing_fact_keys": []
+  },
+  "failure": {
+    "reason": "structured_solver_failed",
+    "last_status": "NEEDS_INFO",
+    "last_reason": "frontier selected-route facts required",
+    "conflict": {}
+  }
+}

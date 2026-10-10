@@ -1,0 +1,590 @@
+{
+  "id": "id_20",
+  "query": "我和朋友两个人计划2025年11月12号从福州出发去苏州玩三天，回来的时间是11月14号。这次出行麻烦帮我把交通、住宿、餐饮和景点都安排一下。关于交通，我希望回程的时候尽量晚点到福州，这样能多留一点时间在苏州，你帮我看看有没有最晚到达的直达车次。\n\n住的地方预算在每晚270到320元之间，麻烦帮我挑挑这个价位里地理位置方便的酒店，一间房就行。另外我特别想去'三桥景区'和'苏州博物馆'，这两个地方是必去的，你帮我安排进行程吧。对了，吃饭的话我听说'七里山塘景区'附近有不少好餐厅，你帮我找一家必吃榜前十的餐厅安排一顿饭吧，想尝尝那边的特色。\n\n这些就是我的要求了，信息应该都齐全了，麻烦你帮我直接规划好行程和预算，不用再问其他细节啦！ 2025年11月12号是周三",
+  "model": "deepseek-flash",
+  "language": "zh",
+  "final_plan": "",
+  "success": false,
+  "problem_ir": {
+    "trip": {
+      "origin": "福州",
+      "destination": "苏州",
+      "start_date": "2025-11-12",
+      "end_date": "2025-11-14",
+      "travelers": 2,
+      "rooms": 1,
+      "budget_max": null,
+      "currency": "RMB"
+    },
+    "transport": {
+      "outbound": {
+        "allowed_modes": [
+          "flight",
+          "train"
+        ],
+        "constraints": [],
+        "soft_preferences": [],
+        "objective": null
+      },
+      "return": {
+        "allowed_modes": [
+          "flight",
+          "train"
+        ],
+        "constraints": [
+          {
+            "field": "direct",
+            "op": "==",
+            "value": true,
+            "source_text": "直达车次"
+          }
+        ],
+        "soft_preferences": [
+          {
+            "field": "arrival_time",
+            "op": ">",
+            "value": 0,
+            "source_text": "尽量晚点到福州",
+            "value_type": "minutes_since_midnight"
+          }
+        ],
+        "objective": {
+          "field": "arrival_time",
+          "sense": "max",
+          "source_text": "最晚到达的直达车次",
+          "soft": false
+        }
+      }
+    },
+    "hotel": {
+      "constraints": [
+        {
+          "field": "price",
+          "op": ">=",
+          "value": 270.0,
+          "source_text": "每晚270到320元之间"
+        },
+        {
+          "field": "price",
+          "op": "<=",
+          "value": 320.0,
+          "source_text": "每晚270到320元之间"
+        }
+      ],
+      "soft_preferences": [],
+      "objective": null
+    },
+    "attractions": {
+      "count": null,
+      "selection": "named",
+      "required_names": [
+        "三桥景区",
+        "苏州博物馆"
+      ],
+      "constraints": [],
+      "soft_preferences": [],
+      "objective": null,
+      "required_groups": []
+    },
+    "restaurants": {
+      "requirements": [
+        {
+          "required_name": null,
+          "nearby_location": "七里山塘景区",
+          "constraints": [
+            {
+              "field": "tags",
+              "op": "contains",
+              "value": "必吃榜前十",
+              "source_text": "必吃榜前十"
+            }
+          ],
+          "soft_preferences": [
+            {
+              "field": "cuisine",
+              "op": "contains",
+              "value": "特色",
+              "source_text": "想尝尝那边的特色"
+            }
+          ],
+          "objective": null
+        }
+      ]
+    },
+    "global_constraints": [],
+    "explicit_preferences": []
+  },
+  "metrics": {
+    "llm_calls": 6,
+    "api_attempts": 6,
+    "input_tokens": 9532,
+    "output_tokens": 3549,
+    "total_tokens": 13081,
+    "tool_calls": 25,
+    "tool_calls_by_name": {
+      "query_train_info": 2,
+      "query_attraction_details": 9,
+      "query_flight_info": 2,
+      "search_location": 1,
+      "recommend_restaurants": 9,
+      "query_hotel_info": 1,
+      "recommend_attractions": 1
+    },
+    "tool_errors": 0,
+    "duplicate_tool_calls_avoided": 0,
+    "solver_rounds": 0,
+    "master_assignments": 0,
+    "master_day_cuts": 0,
+    "constraint_propagations": 1,
+    "constraint_false": 1,
+    "constraint_unknown": 1,
+    "fastcheck_fact_requests": 0,
+    "frontier_states": 0,
+    "shared_fact_requests": 0,
+    "solver_runtime": 0.0,
+    "solver_backend": "gurobi",
+    "route_queries": 0,
+    "parser_success": true,
+    "parser_attempts": 3,
+    "parser_validation_errors": [
+      "soft_preferences must be a list of constraint objects",
+      "unsupported hotel constraint field: 'location'"
+    ],
+    "semantic_audit_calls": 2,
+    "semantic_audit_retries": 1,
+    "semantic_audit_repairs": 0,
+    "semantic_audit_rejected": 1,
+    "semantic_recovery_calls": 1,
+    "ir_repairs_applied": 0,
+    "recovery_rejected": 0,
+    "recall_expansions_proposed": 0,
+    "recall_expansions_accepted": 0,
+    "verification_success": false,
+    "fallback_used": false,
+    "elapsed_time": 13.377233028411865
+  },
+  "semantic_events": [
+    {
+      "stage": "semantic_audit",
+      "verdict": "REJECTED",
+      "error": "unsupported hotel constraint field: 'location'"
+    },
+    {
+      "stage": "semantic_recovery",
+      "action": "KEEP",
+      "issues": [],
+      "conflicts": [
+        {
+          "constraint_id": "restaurants.requirement.0",
+          "kind": "restaurant_requirement",
+          "reason": "no restaurant satisfies grounded requirement",
+          "requirement_index": 0,
+          "source_text": "",
+          "hard": true
+        }
+      ]
+    }
+  ],
+  "verification": null,
+  "state_summary": {
+    "counts": {
+      "flight": 0,
+      "train": 20,
+      "hotel": 20,
+      "attraction": 9,
+      "restaurant": 54,
+      "route": 0,
+      "location": 1
+    },
+    "queried_keys": [
+      "attractions:苏州:all",
+      "details:attraction:七里山塘景区",
+      "details:attraction:三桥景区",
+      "details:attraction:十全街",
+      "details:attraction:平江路历史文化街区",
+      "details:attraction:怡园",
+      "details:attraction:拙政园",
+      "details:attraction:珍珠塔景园",
+      "details:attraction:苏州博物馆",
+      "details:attraction:退思园",
+      "hotels:苏州:2025-11-12:2025-11-14:None:None",
+      "location:七里山塘景区",
+      "outbound:flight:福州:苏州:2025-11-12",
+      "outbound:train:福州:苏州:2025-11-12",
+      "restaurants:generic:31.157833,120.720272",
+      "restaurants:generic:31.158008,120.717448",
+      "restaurants:generic:31.160042,120.718122",
+      "restaurants:generic:31.298923,120.632998",
+      "restaurants:generic:31.307521,120.621266",
+      "restaurants:generic:31.313969,120.634556",
+      "restaurants:generic:31.322948,120.627856",
+      "restaurants:generic:31.324194,120.629211",
+      "restaurants:七里山塘景区:31.317059,120.602105",
+      "return:flight:苏州:福州:2025-11-14",
+      "return:train:苏州:福州:2025-11-14"
+    ],
+    "failed_requests": {},
+    "sample_records": {
+      "train": [
+        {
+          "name": "C3611+D3205",
+          "price": 306.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "苏州",
+          "destination": "福州",
+          "departure_station": "苏州南站",
+          "arrival_station": "福州南站",
+          "departure_time": 641,
+          "arrival_time": 960,
+          "departure_date": "2025-11-14",
+          "arrival_date": "2025-11-14",
+          "duration": 304,
+          "direct": false,
+          "seat_class": "二等座",
+          "train_type": "城际",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "福州",
+              "arrStationCode": "HJU",
+              "arrStationName": "横店站",
+              "depCityName": "苏州",
+              "depStationCode": "SMU",
+              "depStationName": "苏州南站",
+              "duration": 106,
+              "arrDateTime": "2025-11-14 12:27:00",
+              "depDateTime": "2025-11-14 10:41:00",
+              "marketingTransportName": "城际",
+              "marketingTransportNo": "C3611",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            },
+            {
+              "arrCityName": "福州",
+              "arrStationCode": "FYS",
+              "arrStationName": "福州南站",
+              "depCityName": "横店",
+              "depStationCode": "HJU",
+              "depStationName": "横店站",
+              "duration": 198,
+              "arrDateTime": "2025-11-14 16:00:00",
+              "depDateTime": "2025-11-14 12:42:00",
+              "marketingTransportName": "动车",
+              "marketingTransportNo": "D3205",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "D3103",
+          "price": 311.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "苏州",
+          "destination": "福州",
+          "departure_station": "盛泽站",
+          "arrival_station": "福州南站",
+          "departure_time": 935,
+          "arrival_time": 1246,
+          "departure_date": "2025-11-14",
+          "arrival_date": "2025-11-14",
+          "duration": 311,
+          "direct": true,
+          "seat_class": "二等座",
+          "train_type": "动车",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "福州",
+              "arrStationCode": "FYS",
+              "arrStationName": "福州南站",
+              "depCityName": "苏州",
+              "depStationCode": "SJU",
+              "depStationName": "盛泽站",
+              "duration": 311,
+              "arrDateTime": "2025-11-14 20:46:00",
+              "depDateTime": "2025-11-14 15:35:00",
+              "marketingTransportName": "动车",
+              "marketingTransportNo": "D3103",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        },
+        {
+          "name": "G1419+G1411",
+          "price": 360.0,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "mode": "train",
+          "origin": "苏州",
+          "destination": "福州",
+          "departure_station": "苏州南站",
+          "arrival_station": "福州站",
+          "departure_time": 1087,
+          "arrival_time": 1345,
+          "departure_date": "2025-11-14",
+          "arrival_date": "2025-11-14",
+          "duration": 243,
+          "direct": false,
+          "seat_class": "二等座",
+          "train_type": "高铁",
+          "seat_status": Infinity,
+          "segments": [
+            {
+              "arrCityName": "福州",
+              "arrStationCode": "HVU",
+              "arrStationName": "杭州西站",
+              "depCityName": "苏州",
+              "depStationCode": "SMU",
+              "depStationName": "苏州南站",
+              "duration": 51,
+              "arrDateTime": "2025-11-14 18:58:00",
+              "depDateTime": "2025-11-14 18:07:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G1419",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            },
+            {
+              "arrCityName": "福州",
+              "arrStationCode": "FZS",
+              "arrStationName": "福州站",
+              "depCityName": "杭州西",
+              "depStationCode": "HVU",
+              "depStationName": "杭州西站",
+              "duration": 192,
+              "arrDateTime": "2025-11-14 22:25:00",
+              "depDateTime": "2025-11-14 19:13:00",
+              "marketingTransportName": "高铁",
+              "marketingTransportNo": "G1411",
+              "seatClassName": "二等座",
+              "剩余票数量": "充足"
+            }
+          ]
+        }
+      ],
+      "hotel": [
+        {
+          "name": "桔子昆山开发区前进东路酒店",
+          "price": 355.0,
+          "rating": 4.5,
+          "city": null,
+          "address": "开发区前进东路986号",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 31.38427,
+          "lon": 121.003365,
+          "star": 3.0,
+          "services": [],
+          "brand": "桔子",
+          "decoration_year": 2025.0
+        },
+        {
+          "name": "太仓玛丽蒂姆花园酒店",
+          "price": 220.0,
+          "rating": 4.6,
+          "city": null,
+          "address": "人民北路11号（近郑和路）",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 31.454323,
+          "lon": 121.10081,
+          "star": 5.0,
+          "services": [],
+          "brand": "",
+          "decoration_year": 2009.0
+        },
+        {
+          "name": "苏地亚美致酒店(相城活力岛地铁站店)",
+          "price": 210.0,
+          "rating": 4.5,
+          "city": null,
+          "address": "苏州相城区荣泰街汇萃商业广场4栋T3楼",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 31.371696,
+          "lon": 120.604819,
+          "star": 3.0,
+          "services": [],
+          "brand": "",
+          "decoration_year": 2020.0
+        }
+      ],
+      "attraction": [
+        {
+          "name": "苏州博物馆",
+          "price": 0.0,
+          "rating": 4.8,
+          "city": "苏州",
+          "address": "nan",
+          "opening_time": 540,
+          "closing_time": 1020,
+          "lat": 31.322948,
+          "lon": 120.627856,
+          "min_duration": 60,
+          "max_duration": 150,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "周一"
+        },
+        {
+          "name": "三桥景区",
+          "price": 0.0,
+          "rating": 4.4,
+          "city": "苏州",
+          "address": "nan",
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 31.158008,
+          "lon": 120.717448,
+          "min_duration": 0,
+          "max_duration": 90,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "nan"
+        },
+        {
+          "name": "怡园",
+          "price": 15.0,
+          "rating": 4.8,
+          "city": "苏州",
+          "address": "nan",
+          "opening_time": 450,
+          "closing_time": 1050,
+          "lat": 31.307521,
+          "lon": 120.621266,
+          "min_duration": 30,
+          "max_duration": 120,
+          "cuisine": null,
+          "tags": [],
+          "nearby_location": null,
+          "attraction_type": "历史文化",
+          "closing_dates": "nan"
+        }
+      ],
+      "restaurant": [
+        {
+          "name": "初见山塘音乐餐厅酒吧",
+          "price": 69.0,
+          "rating": 3.9,
+          "city": null,
+          "address": null,
+          "opening_time": 570,
+          "closing_time": 60,
+          "lat": 31.317726,
+          "lon": 120.601528,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [
+            "户外座位",
+            "有等位区"
+          ],
+          "nearby_location": "七里山塘景区",
+          "attraction_type": null
+        },
+        {
+          "name": "书香世家山塘府邸·陶然轩中餐厅",
+          "price": 155.0,
+          "rating": 4.4,
+          "city": null,
+          "address": null,
+          "opening_time": 1050,
+          "closing_time": 1200,
+          "lat": 31.316772,
+          "lon": 120.603189,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;餐饮相关场所;餐饮相关",
+          "tags": [
+            "户外座位",
+            "线上取号排队"
+          ],
+          "nearby_location": "七里山塘景区",
+          "attraction_type": null
+        },
+        {
+          "name": "赵元章肉骨烧(山塘街店)",
+          "price": 27.0,
+          "rating": 4.6,
+          "city": null,
+          "address": null,
+          "opening_time": 570,
+          "closing_time": 1320,
+          "lat": 31.31645,
+          "lon": 120.603223,
+          "min_duration": null,
+          "max_duration": null,
+          "cuisine": "餐饮服务;中餐厅;中餐厅",
+          "tags": [
+            "有等位区"
+          ],
+          "nearby_location": "七里山塘景区",
+          "attraction_type": null
+        }
+      ],
+      "location": [
+        {
+          "name": "七里山塘景区",
+          "price": null,
+          "rating": null,
+          "city": null,
+          "address": null,
+          "opening_time": null,
+          "closing_time": null,
+          "lat": 31.317059,
+          "lon": 120.602105
+        }
+      ]
+    }
+  },
+  "solution": null,
+  "constraint_summary": {
+    "truth": "UNSAT",
+    "satisfied": 10,
+    "unresolved": 1,
+    "conflicts": [
+      {
+        "constraint_id": "restaurants.requirement.0",
+        "kind": "restaurant_requirement",
+        "reason": "no restaurant satisfies grounded requirement",
+        "requirement_index": 0
+      }
+    ],
+    "missing_fact_keys": []
+  },
+  "failure": {
+    "reason": "structured_solver_failed",
+    "last_status": "INFEASIBLE",
+    "last_reason": "symbolic constraint propagation failed",
+    "conflict": {
+      "kind": "symbolic_infeasible",
+      "constraints": [
+        {
+          "constraint_id": "restaurants.requirement.0",
+          "kind": "restaurant_requirement",
+          "reason": "no restaurant satisfies grounded requirement",
+          "requirement_index": 0
+        }
+      ]
+    }
+  }
+}
